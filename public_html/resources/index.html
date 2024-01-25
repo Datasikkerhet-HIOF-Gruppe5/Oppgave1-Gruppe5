@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrering</title>
+</head>
+<body>
+    <h2>Registrering</h2>
+    <label>Velg bruker</label> <br>
+    <a href="student.php">
+        <button>Student</button>
+    </a>
+    <a href="professor.php">
+        <button>Foreleser</button>
+    </a>
+    <a href="guest.php">
+        <button>Gjest</button>
+    </a>
+    <h2>Allerede bruker?</h2>
+    <form action="login.php" method="post">
+        <label for="username">Brukernavn:</label><br>
+        <input type="text" name="username" required><br>
+        <label for="password">Passord:</label><br>
+        <input type="password" name="password" required><br>
+        <input type="submit" name="login" value="Logg inn">
+    </form>
+</body>
+</html>
