@@ -15,6 +15,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Password hashing
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
+    // Check if email already exists
+    $checkEmail = checkEmailExistence($email);
+    if ($checkEmail) {
+        die("That email already exists");
+    }
+
+    // Check if name already exists
+    $checkName = checkNameExistence($name);
+    if ($checkName) {
+        die("That name already exists");
+    }
+
     // Insert student data into the database
     $stmt = $pdo->prepare("INSERT INTO students (name, email, password) VALUES (:name, :email, :password)");
     $stmt->bindParam(':name', $name);
@@ -23,5 +35,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
 
     echo "Student registered successfully.";
+}
+
+function checkEmailExistence($email) {
+    global $pdo;
+
+    $query = "SELECT * FROM students WHERE email = :email LIMIT 1";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+
+    return is_array($stmt->fetch(PDO::FETCH_ASSOC));
+}
+
+function checkNameExistence($name) {
+    global $pdo;
+
+    $query = "SELECT * FROM students WHERE name = :name LIMIT 1";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':name', $name);
+    $stmt->execute();
+
+    return ($stmt->rowCount() > 0);
 }
 ?>

@@ -17,6 +17,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $subjectCode = $_POST['subjectCode'];
     $pinCode = $_POST['pinCode'];
 
+    // Check if email already exists
+    $checkEmail = checkEmailExistence($email);
+    if ($checkEmail) {
+        die("That email already exists");
+    }
+
+    // Check if name already exists
+    $checkName = checkNameExistence($name);
+    if ($checkName) {
+        die("That name already exists");
+    }
+
     // Handling file upload
     $target_dir = "uploads/";
     $picture = $_FILES["picture"]["name"];
@@ -43,5 +55,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
 
     echo "Professor registered successfully.";
+}
+
+function checkEmailExistence($email) {
+    global $pdo;
+
+    $query = "SELECT * FROM professors WHERE email = :email LIMIT 1";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+
+    return is_array($stmt->fetch(PDO::FETCH_ASSOC));
+}
+
+function checkNameExistence($name) {
+    global $pdo;
+
+    $query = "SELECT * FROM professors WHERE name = :name LIMIT 1";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':name', $name);
+    $stmt->execute();
+
+    return ($stmt->rowCount() > 0);
 }
 ?>
