@@ -1,20 +1,39 @@
 <?php
-$host = 'localhost';
-$db   = 'dbname';
-$user = 'username';
-$pass = 'password';
-$charset = 'utf8mb4';
+class Database
+{
+    private static $pdo;
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
+    private function __construct() {}
 
-try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (\PDOException $e) {
-    throw new \PDOException($e->getMessage(), (int)$e->getCode());
+    public static function getInstance()
+    {
+        if (!self::$pdo) {
+            self::$pdo = self::createConnection();
+        }
+        return self::$pdo;
+    }
+
+    private static function createConnection()
+    {
+        $host = 'localhost';
+        $db   = 'dbname';
+        $user = 'username';
+        $pass = 'password';
+        $charset = 'utf8mb4';
+
+        $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+
+        try {
+            return new PDO($dsn, $user, $pass, $options);
+        } catch (\PDOException $e) {
+            throw new \PDOException($e->getMessage(), (int)$e->getCode());
+        }
+    }
 }
+
 ?>

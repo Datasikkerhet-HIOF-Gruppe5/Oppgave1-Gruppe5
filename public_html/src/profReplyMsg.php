@@ -8,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $professorId = $_SESSION['user_id']; // Assuming the professor is logged in
 
     // Insert reply data into the database
+    $pdo = Database::getInstance();
     $stmt = $pdo->prepare("INSERT INTO replies (message_id, professor_id, reply_text) VALUES (:message_id, :professor_id, :reply_text)");
     $stmt->bindParam(':message_id', $messageId);
     $stmt->bindParam(':professor_id', $professorId);

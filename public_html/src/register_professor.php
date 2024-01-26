@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     move_uploaded_file($_FILES["picture"]["tmp_name"], $target_file);
 
     // Insert professor data into the database
+    $pdo = Database::getInstance();
     $stmt = $pdo->prepare("INSERT INTO professors (name, email, password, picture) VALUES (:name, :email, :password, :picture)");
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);

@@ -5,6 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $pinCode = $_GET['pin']; // Assuming a GET request with the PIN code
 
     // Fetch messages and replies based on the professor's PIN code
+    $pdo = Database::getInstance();
     $stmt = $pdo->prepare("SELECT m.id, m.message_text, s.code AS subject_code, s.name AS subject_name, p.name AS professor_name, p.picture 
                            FROM messages m 
                            JOIN subjects s ON m.subject_id = s.id 

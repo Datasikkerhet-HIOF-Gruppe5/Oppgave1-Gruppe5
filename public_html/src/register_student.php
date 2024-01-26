@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Insert student data into the database
+    $pdo = Database::getInstance();
     $stmt = $pdo->prepare("INSERT INTO students (name, email, password) VALUES (:name, :email, :password)");
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);

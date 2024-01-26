@@ -15,6 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $studentId = $_SESSION['user_id']; // Assuming the student is logged in
 
     // Insert message data into the database
+    $pdo = Database::getInstance();
     $stmt = $pdo->prepare("INSERT INTO messages (subject_id, student_id, message_text) VALUES (:subject_id, :student_id, :message_text)");
     $stmt->bindParam(':subject_id', $subjectId);
     $stmt->bindParam(':student_id', $studentId);
