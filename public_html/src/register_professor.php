@@ -4,10 +4,13 @@ include 'db_connect.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize name
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+    if (!preg_match("/^[a-zA-Z-' ]*$/", $name) || strlen($name) > 50) {
+        die("Invalid name");
+    }
 
     // Validate and sanitize email
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
-    if (!$email) {
+    if (!$email || strlen($email) > 100) {
         die("Invalid email format");
     }
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
@@ -19,14 +22,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if email already exists
     $checkEmail = checkEmailExistence($email);
-    if ($checkEmail) {
-        die("That email already exists");
-    }
 
-    // Check if name already exists
+    // Check if name/email already exists
     $checkName = checkNameExistence($name);
-    if ($checkName) {
-        die("That name already exists");
+    if ($checkEmail || $checkName) {
+        die("Registration error: Duplicate information");
     }
 
     // Handling file upload
