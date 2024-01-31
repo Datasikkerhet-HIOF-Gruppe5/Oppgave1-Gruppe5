@@ -2,9 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrering</title>
 </head>
 <body>
-
+<h2>Registrering</h2>
+<label>Velg bruker</label> <br>
+<a href="resources/student.html">
+    <button>Student</button>
+</a>
+<a href="resources/professor.html">
+    <button>Foreleser</button>
+</a>
+<a href="resources/guest.html">
+    <button>Gjest</button>
+</a>
+<h2>Allerede bruker?</h2>
+<form action="src/login.php" method="post">
+    <label for="email">Email:</label><br>
+    <input type="email" name="email" id="email" placeholder="example@example.com" size="30" required><br>
+    <label for="password">Passord:</label><br>
+    <input type="password" name="password" required><br>
+    <input type="submit" name="login" value="Logg inn">
+</form>
 </body>
 </html>
