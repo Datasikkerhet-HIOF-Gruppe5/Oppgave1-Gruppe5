@@ -1,10 +1,7 @@
 <?php
-
-$host = 'localhost';
-$db   = 'students';
-$user = 'root';
-$pass = '';
-$charset = 'utf8mb4';
+class Database
+{
+    private static $pdo;
 
     private function __construct() {}
 

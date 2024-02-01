@@ -3,9 +3,15 @@
 include 'db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitize name
-    $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
-    if (!preg_match("/^[a-zA-Z-' ]*$/", $name) || strlen($name) > 50) {
+
+    // Sanitize firstname
+    $firstName = filter_var($_POST['firstName'], FILTER_SANITIZE_STRING);
+    if (!preg_match("/^[a-zA-Z-' ]*$/", $firstName) || strlen($firstName) > 50) {
+        die("Invalid name");
+    }
+    // Sanitize lastname
+    $lastName = filter_var($_POST['lastName'], FILTER_SANITIZE_STRING);
+    if (!preg_match("/^[a-zA-Z-' ]*$/", $lastName) || strlen($lastName) > 50) {
         die("Invalid name");
     }
 
@@ -26,21 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Registration error: Duplicate information");
     }
 
-
-    // Check if name/email already exists
-    $checkName = checkNameExistence($name);
-
-    if ($checkName) {
-        die("Registration error: Duplicate information");
-    }
-  
-    if ($checkEmail || $checkName) {
-        die("Registration error: Duplicate information");
-    }
-
 // Insert student data into the database
-    $stmt = $pdo->prepare("INSERT INTO students (name, email, password) VALUES (:name, :email, :password)");
+    $pdo = Database::getInstance();
+    $stmt = $pdo->prepare("INSERT INTO students (firstName, lastName, email, password) VALUES (:name, :lastName, :email, :password)");
     $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':lastName', $lastName);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':password', $password);
 
@@ -54,24 +50,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 function checkEmailExistence($email) {
-    global $pdo;
-
+    $pdo = Database::getInstance();
     $query = "SELECT * FROM students WHERE email = :email LIMIT 1";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':email', $email);
     $stmt->execute();
 
     return is_array($stmt->fetch(PDO::FETCH_ASSOC));
-}
-
-function checkNameExistence($name) {
-    global $pdo;
-
-    $query = "SELECT * FROM students WHERE name = :name LIMIT 1";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':name', $name);
-    $stmt->execute();
-
-    return ($stmt->rowCount() > 0);
 }
 ?>
