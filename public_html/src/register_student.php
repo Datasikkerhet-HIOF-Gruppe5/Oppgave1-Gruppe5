@@ -34,10 +34,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Insert student data into the database
     $pdo = Database::getInstance();
-    $stmt = $pdo->prepare("INSERT INTO students (firstName, lastName, email, password) VALUES (:name, :lastName, :email, :password)");
-    $stmt->bindParam(':name', $name);
+    $stmt = $pdo->prepare("INSERT INTO students (firstName, lastName, email, fieldOfStudy, classOf, password) VALUES (:firstName, :lastName, :email, :fieldOfStudy, :classOf, :password)");
+    $stmt->bindParam(':firstName', $firstName);
     $stmt->bindParam(':lastName', $lastName);
     $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':fieldOfStudy', $fieldOfStudy);
+    $stmt->bindParam(':classOf', $classOf);
     $stmt->bindParam(':password', $password);
 
     if ($stmt->execute()) {
