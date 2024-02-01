@@ -22,8 +22,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if email already exists
     $checkEmail = checkEmailExistence($email);
 
+    if ($checkEmail) {
+        die("Registration error: Duplicate information");
+    }
+
+
     // Check if name/email already exists
     $checkName = checkNameExistence($name);
+
+    if ($checkName) {
+        die("Registration error: Duplicate information");
+    }
+  
     if ($checkEmail || $checkName) {
         die("Registration error: Duplicate information");
     }

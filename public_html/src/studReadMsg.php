@@ -5,6 +5,7 @@ session_start();
 $studentId = $_SESSION['user_id']; // Assuming the student is logged in
 
 // Query to fetch messages sent by the student
+$pdo = Database::getInstance();
 $stmt = $pdo->prepare("SELECT m.id, m.message_text, s.name AS subject_name FROM messages m 
                        JOIN subjects s ON m.subject_id = s.id 
                        WHERE m.student_id = ?");
