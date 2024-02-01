@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatroom</title>
+</head>
+<body>
+    <h2>
+        <!-- subjectCode-->>
+    </h2>
+
+    <p>
+        <!--subjectName-->
+    </p>
+    
+    <img src="profImg.jpg" alt="Emnebilde">
+
+    <div id="messageArea" style="height: 300px; border: 1px solid #ccc; overflow-y: scroll;">
+        <div class="message">
+            <p>Dette er en melding fra brukeren.</p>
+            <a href="reportMsgs">Rapporter</a>
+        </div>
+    </div>
+
+    <form id="message-form" action="anonPostMsg.php" method="POST">
+        <input type="text" name="message" id="user-input" placeholder="Skriv melding">
+        <button type="submit">Send Melding</button> 
+    </form> 
+
+</body>
+</html>
