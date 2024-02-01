@@ -50,13 +50,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Insert professor data into the database
     $pdo = Database::getInstance();
-    $stmt = $pdo->prepare("INSERT INTO professors (firstName, lastName, email, feildOfStudy, classOf, password) VALUES (:firstName, :lastName, :email, :feildOfStudy, :classOf, :password)");
+    $stmt = $pdo->prepare("INSERT INTO professors (firstName, lastName, email, subjectName, subjectCode, password) VALUES (:firstName, :lastName, :email, :subjectName, :subjectCode, :password)");
 
     $stmt->bindParam(':firstName', $firstName);
     $stmt->bindParam(':lastName', $lastName);
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':feildOfStudy', $feildOfStudy);
-    $stmt->bindParam(':classOf', $classOf, PDO::PARAM_INT);
+    $stmt->bindParam(':subjectName', $subjectName);
+    $stmt->bindParam(':subjectPIN', $subjectPIN, PDO::PARAM_INT);
     $stmt->bindParam(':password', $password);
 
     if ($stmt->execute()) {
