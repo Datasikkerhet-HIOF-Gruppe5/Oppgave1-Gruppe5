@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         // Check if user is a student
-        $pdo = Database::getInstance();       
+        $pdo = Database::getInstance();
         $stmt = $pdo->prepare("SELECT * FROM students WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user_role'] = 'student';
             echo "Student login successful.";
             // Redirect to a student-specific page or dashboard if needed
-            // header("Location: student_dashboard.php");
+            header("Location: ../resources/forumStudent.html");
             exit;
 
         } else {
@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_role'] = 'professor';
                 echo "Professor login successful.";
                 // Redirect to a professor-specific page or dashboard if needed
-                // header("Location: professor_dashboard.php");
+                header("Location: ../resources/forumProf.html");
                 exit;
             } else {
                 echo "Invalid credentials.";
@@ -65,13 +65,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     switch ($_SESSION['user_role']) {
         case 'student':
-            header("Location: forumStudent.html");
+            header("Location: ../resources/forumStudent.html");
             break;
         case 'professor':
-            header("Location: forumProfessor.html");
+            header("Location: ../resources/forumProf.html");
             break;
         case 'anonymous':
-            header("Location: forumAnon.html");
+            header("Location: ../resources/forumAnon.html");
             break;
         default:
             echo "Invalid user role.";
