@@ -30,4 +30,4 @@ foreach ($messages as $message) {
 
     echo "<br>";
 }
-?>
+

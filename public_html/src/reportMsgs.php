@@ -12,4 +12,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     echo "Message reported successfully.";
 }
-?>
+

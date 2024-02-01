@@ -31,5 +31,5 @@ function updatePassword($email, $newPassword)
     echo "Password updated successfully.";
 }
 
-?>
+
 

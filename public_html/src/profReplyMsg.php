@@ -17,4 +17,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     echo "Reply sent successfully.";
 }
-?>
+

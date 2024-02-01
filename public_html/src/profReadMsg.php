@@ -15,4 +15,4 @@ foreach ($messages as $message) {
     echo "Subject: " . $message['subject_name'] . "<br>";
     echo "Message: " . $message['message_text'] . "<br><br>";
 }
-?>
+

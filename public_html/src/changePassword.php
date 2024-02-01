@@ -39,4 +39,4 @@ function getUserById($userId, $pdo)
 
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-?>
+
