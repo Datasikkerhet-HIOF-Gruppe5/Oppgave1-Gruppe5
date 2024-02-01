@@ -22,14 +22,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if email already exists
     $checkEmail = checkEmailExistence($email);
 
-    // Check if name/email already exists
-    $checkName = checkNameExistence($name);
-    if ($checkEmail || $checkName) {
+    if ($checkEmail) {
         die("Registration error: Duplicate information");
     }
 
-// Insert student data into the database
-    $stmt = $pdo->prepare("INSERT INTO students (name, email, password) VALUES (:name, :email, :password)");
+
+    // Check if name already exists
+    $checkName = checkNameExistence($name);
+
+    if ($checkName) {
+        die("Registration error: Duplicate information");
+    }
+
+    // Handling file upload
+    $target_dir = "uploads/";
+    $picture = $_FILES["picture"]["name"];
+    $target_file = $target_dir . basename($picture);
+    move_uploaded_file($_FILES["picture"]["tmp_name"], $target_file);
+
+    // Insert professor data into the database
+    $pdo = Database::getInstance();
+    $stmt = $pdo->prepare("INSERT INTO professors (name, email, password, picture) VALUES (:name, :email, :password, :picture)");
+  
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':password', $password);
