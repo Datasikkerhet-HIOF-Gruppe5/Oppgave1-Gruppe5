@@ -6,16 +6,17 @@
     <title>Forum</title>
 </head>
 <body>
-    <h1>Forum</h1>
-    <h2>
-        <!--subjectName-->
-    </h2>
+    <form method="post" action="studReadMsg.php">
+        <label for="subjectName">Velg et emne/fag:</label>
+        <select id="subjectName" name="subjectName"></select>   
 
     <div id="messageArea" style="height: 300px; border: 1px solid #ccc; overflow-y: scroll;">
-    <!-- messages here-->
+        <div class="message">
+            <p>Dette er en melding fra brukeren.</p>
+        </div>
     </div>
 
-    <form id="message-form" action="profReplyMsg.php" method="POST">
+    <form id="message-form" action="studSendMsg.php" method="POST">
         <input type="text" name="message" id="user-input" placeholder="Skriv melding">
         <button type="submit">Send Melding</button>
     </form> 
