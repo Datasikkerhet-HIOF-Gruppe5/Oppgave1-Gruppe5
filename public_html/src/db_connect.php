@@ -1,7 +1,10 @@
 <?php
-class Database
-{
-    private static $pdo;
+
+$host = 'localhost';
+$db   = 'students';
+$user = 'root';
+$pass = '';
+$charset = 'utf8mb4';
 
     private function __construct() {}
 

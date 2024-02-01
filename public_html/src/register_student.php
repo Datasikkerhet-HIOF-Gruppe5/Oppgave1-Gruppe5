@@ -1,4 +1,5 @@
 <?php
+
 include 'db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -20,25 +21,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if email already exists
     $checkEmail = checkEmailExistence($email);
+
     if ($checkEmail) {
         die("Registration error: Duplicate information");
     }
 
-    // Check if name already exists
+
+    // Check if name/email already exists
     $checkName = checkNameExistence($name);
+
     if ($checkName) {
         die("Registration error: Duplicate information");
     }
+  
+    if ($checkEmail || $checkName) {
+        die("Registration error: Duplicate information");
+    }
 
-    // Insert student data into the database
-    $pdo = Database::getInstance();
+// Insert student data into the database
     $stmt = $pdo->prepare("INSERT INTO students (name, email, password) VALUES (:name, :email, :password)");
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':password', $password);
-    $stmt->execute();
 
-    echo "Student registered successfully.";
+    if ($stmt->execute()) {
+        echo "<p>Registration successful.</p>";
+        echo "<p>Redirecting back to login...</p>";
+        header("Refresh:3; url=../index.html"); // Redirect to login.php after 3 seconds
+    } else {
+        echo "<p>Registration failed.</p>";
+    }
 }
 
 function checkEmailExistence($email) {
