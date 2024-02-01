@@ -60,4 +60,4 @@ function checkEmailExistence($email) {
 
     return is_array($stmt->fetch(PDO::FETCH_ASSOC));
 }
-?>
+
