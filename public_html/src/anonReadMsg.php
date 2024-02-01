@@ -22,4 +22,4 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         echo "Message: " . $message['message_text'] . "<br><br>";
     }
 }
-?>
+

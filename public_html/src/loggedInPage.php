@@ -30,4 +30,4 @@ if ($_SESSION['user_role'] == 'student') {
 } else {
     echo "Invalid user role.";
 }
-?>
+

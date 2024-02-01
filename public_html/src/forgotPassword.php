@@ -1,8 +1,7 @@
 <?php
 include 'db_connect.php';
-session_start();
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
 
     try {
@@ -19,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Store the token and expiry time in the database
             $expiryTime = time() + (60 * 60); // Token expires in 1 hour
-            $insertTokenQuery = "INSERT INTO password_reset (email, token, expiry_time) VALUES (?, ?, ?)";
+            $insertTokenQuery = ("INSERT INTO password_reset (email, token, expiry_time) VALUES (:email, :token , :expiry_time");
             $stmt = $pdo->prepare($insertTokenQuery);
             $stmt->execute([$email, $token, $expiryTime]);
 
@@ -38,4 +37,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-?>
+
