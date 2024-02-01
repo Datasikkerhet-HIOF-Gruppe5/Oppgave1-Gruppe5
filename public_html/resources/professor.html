@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foreleser</title>
+    <title>Foreleser Registrering</title>
 </head>
 <body>
     <form action="../src/register_professor.php" method="POST">
         <label for="firstName">Fornavn:</label><br>
-        <input type ="text" name ="firstName" required><br>
+        <input type="text" name="firstName" id="firstName" autocomplete="given-name" required><br>
 
         <label for="lastName">Etternavn:</label><br>
-        <input type ="text" name ="lastName" required><br>
+        <input type="text" name="lastName" id="lastName" autocomplete="family-name" required><br>
 
-        <label for="email">E-post</label><br>
-        <input type ="email" id="email" name="email" placeholder="example@example.com" size="30" required><br>
+        <label for="email">E-post:</label><br>
+        <input type="email" id="email" name="email" placeholder="example@example.com" size="30" autocomplete="email" required><br>
 
-    <label>Legg til bilde:</label><br>
-    <input type="file" name="picture"><br>
+        <label for="picture">Legg til bilde:</label><br>
+        <input type="file" name="picture" id="picture"><br>
 
-        <label>Emne:</label><br>
-        <input type ="text" name ="subjectName" required><br>
+        <label for="subjectName">Emne:</label><br>
+        <input type="text" name="subjectName" id="subjectName" required><br>
 
-        <label>Emnekode:</label><br>
-        <input type="text" name ="subjectCode" inputmode="numeric" pattern="\d{4}" maxlength="4" placeholder="Firesifret" required/> <br>
+        <label for="subjectCode">Emnekode:</label><br>
+        <input type="text" name="subjectCode" id="subjectCode" inputmode="numeric" pattern="\d{4}" maxlength="4" placeholder="Firesifret" autocomplete="off" required/><br>
 
-        <label>Passord:</label><br>
-        <input type ="password" name ="password" required><br>
-        <input type="submit" value="Register"><br>
+        <label for="password">Passord:</label><br>
+        <input type="password" name="password" id="password" autocomplete="new-password" required><br>
 
-</form>
+        <input type="submit" value="Registrer"><br>
+    </form>
 </body>
 </html>

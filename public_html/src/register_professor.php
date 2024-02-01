@@ -21,6 +21,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
+    $feildOfStudy = filter_var($_POST['feildOfStudy'], FILTER_SANITIZE_STRING);
+    if (!preg_match("/^[a-zA-Z-' ]*$/", $feildOfStudy) || strlen($feildOfStudy) > 50) {
+        die("Invalid name");
+    }
+
+    $classOf = filter_var($_POST['classOf'], FILTER_SANITIZE_NUMBER_INT);
+    if (!filter_var($classOf, FILTER_VALIDATE_INT) || $classOf < 2000) {
+        die("Invalid classOf year");
+    }
+
+
     // Password hashing
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
@@ -39,11 +50,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Insert professor data into the database
     $pdo = Database::getInstance();
-    $stmt = $pdo->prepare("INSERT INTO professors (firstName, lastName, email, password) VALUES (:firstName, :lastName,:email, :password)");
-  
-    $stmt->bindParam(':$firstName', $firstName);
-    $stmt->bindParam(':$lastName', $lastName);
+    $stmt = $pdo->prepare("INSERT INTO professors (firstName, lastName, email, feildOfStudy, classOf, password) VALUES (:firstName, :lastName, :email, :feildOfStudy, :classOf, :password)");
+
+    $stmt->bindParam(':firstName', $firstName);
+    $stmt->bindParam(':lastName', $lastName);
     $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':feildOfStudy', $feildOfStudy);
+    $stmt->bindParam(':classOf', $classOf, PDO::PARAM_INT);
     $stmt->bindParam(':password', $password);
 
     if ($stmt->execute()) {

@@ -1,5 +1,4 @@
 <?php
-
 include 'db_connect.php';
 session_start();
 
@@ -20,20 +19,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Store the token and expiry time in the database
             $expiryTime = time() + (60 * 60); // Token expires in 1 hour
-            $insertTokenQuery = "INSERT INTO password_reset (email, token, expiry_time) VALUES (:email, :token, :expiry_time)";
+            $insertTokenQuery = "INSERT INTO password_reset (email, token, expiry_time) VALUES (?, ?, ?)";
             $stmt = $pdo->prepare($insertTokenQuery);
             $stmt->execute([$email, $token, $expiryTime]);
 
             // Send the reset email
-            $resetLink = "http://localhost/passwordReset.php?token=$token";
+            $resetLink = "http://localhost/resetPassword.php?token=$token";
             $subject = "Password Reset";
             $message = "Click the following link to reset your password: $resetLink";
+
+            // Send the email
             mail($email, $subject, $message);
 
             echo "Password reset email sent.";
         }
     } catch (PDOException $e) {
-        // Handle database errors
         echo "Database error: " . $e->getMessage();
     }
 }
