@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['subject_id']) && !empty($_POST['subject_id'])) {
         $_SESSION['user_id'] = $_POST['subject_id'];
         $_SESSION['user_role'] = 'anonymous';
-        header("Location: ../resources/forumAnon.html");
+        header("Location: ../src/anonReadMsg.php");
         exit;
     }
 
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user_role'] = 'student';
             echo "Student login successful.";
             // Redirect to a student-specific page or dashboard if needed
-            header("Location: ../resources/forumStudent.html");
+            header("Location: ../src/studReadMsg.php");
             exit;
 
         } else {
@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_role'] = 'professor';
                 echo "Professor login successful.";
                 // Redirect to a professor-specific page or dashboard if needed
-                header("Location: ../resources/forumProf.html");
+                header("Location: ../src/profReadMsg.php");
                 exit;
             } else {
                 echo "Invalid credentials.";
@@ -65,18 +65,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     switch ($_SESSION['user_role']) {
         case 'student':
-            header("Location: ../resources/forumStudent.html");
+            header("Location: ../src/studReadMsg.php");
             break;
         case 'professor':
-            header("Location: ../resources/forumProf.html");
+            header("Location: ../src/profReadMsg.php");
             break;
         case 'anonymous':
-            header("Location: ../resources/forumAnon.html");
+            header("Location: ../src/anonReadMsg.php");
             break;
         default:
             echo "Invalid user role.";
             break;
     }
-
 }
-
+?>

@@ -2,19 +2,21 @@
 include 'db_connect.php';
 session_start();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $messageId = $_POST['message_id'];
-    $replyText = $_POST['reply_text'];
-    $professorId = $_SESSION['user_id']; // Assuming the professor is logged in
-
-    // Insert reply data into the database
-    $pdo = Database::getInstance();
-    $stmt = $pdo->prepare("INSERT INTO replies (message_id, professor_id, reply_text) VALUES (:message_id, :professor_id, :reply_text)");
-    $stmt->bindParam(':message_id', $messageId);
-    $stmt->bindParam(':professor_id', $professorId);
-    $stmt->bindParam(':reply_text', $replyText);
-    $stmt->execute();
-
-    echo "Reply sent successfully.";
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to login or show an error
+    exit('Access Denied');
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['message_id'], $_POST['reply'])) {
+    $pdo = Database::getInstance();
+    $stmt = $pdo->prepare("UPDATE messages SET answer = :answer WHERE id = :message_id");
+    $stmt->bindParam(':answer', $_POST['reply']);
+    $stmt->bindParam(':message_id', $_POST['message_id']);
+    $stmt->execute();
+
+    // Redirect back to the messages page or show a success message
+    header("Location: profReadMsg.php");
+    exit;
+}
+
+?>
