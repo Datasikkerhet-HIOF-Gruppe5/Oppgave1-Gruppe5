@@ -43,25 +43,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 // Handling file upload
-    $file = $_FILES['file'];
-    $fileSize = $_FILES['file']['size'];
+    $fileSize = $_FILES['picture']['size'];
     $pictureFile = NULL;
 
     if ($fileSize !== 0) {
-    $fileName = $_FILES['file']['name'];
-    $fileTmpName = $_FILES['file']['tmp_name'];
-    $fileError = $_FILES['file']['error'];
-
-    $fileExt = explode('.', $fileName);
-    $fileActualExt = strtolower(end($fileExt));
-
-    $allowed = array('jpg', 'jpeg', 'png');
-
-    if(in_array($fileActualExt, $allowed)) {
-        if($fileError === 0 && $fileSize < 500000) {
-                $pictureFile = uniqid('', true) . ".jpg";
-
-                $fileDestination = 'uploads/' . $pictureFile;
+        $fileName = $_FILES['picture']['name'];
+        $fileTmpName = $_FILES['picture']['tmp_name'];
+        $fileError = $_FILES['picture']['error'];
+    
+        $fileExt = explode('.', $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+    
+        $allowed = array('jpg', 'jpeg', 'png');
+    
+        if(in_array($fileActualExt, $allowed)) {
+            if($fileError === 0 && $fileSize < 500000) {
+                    $pictureFile = uniqid('', true) . ".jpg";
+    
+                    $fileDestination = '../../uploads/' . $pictureFile;
                 move_uploaded_file($fileTmpName, $fileDestination);
             } 
         } else {
