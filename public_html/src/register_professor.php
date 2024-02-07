@@ -42,20 +42,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Registration error: Duplicate information");
     }
 
-    // Handling file upload
-    $target_dir = "uploads/";
-    $picture = $_FILES["picture"]["name"];
-    $target_file = $target_dir . basename($picture);
-    move_uploaded_file($_FILES["picture"]["tmp_name"], $target_file);
+// Handling file upload
+    $file = $_FILES['file'];
+    $fileSize = $_FILES['file']['size'];
+    $pictureFile = NULL;
+
+    if ($fileSize !== 0) {
+    $fileName = $_FILES['file']['name'];
+    $fileTmpName = $_FILES['file']['tmp_name'];
+    $fileError = $_FILES['file']['error'];
+
+    $fileExt = explode('.', $fileName);
+    $fileActualExt = strtolower(end($fileExt));
+
+    $allowed = array('jpg', 'jpeg', 'png');
+
+    if(in_array($fileActualExt, $allowed)) {
+        if($fileError === 0 && $fileSize < 500000) {
+                $pictureFile = uniqid('', true) . ".jpg";
+
+                $fileDestination = 'uploads/' . $pictureFile;
+                move_uploaded_file($fileTmpName, $fileDestination);
+            } 
+        } else {
+            echo 'There was an error uploading your picture';
+        }
+    }
 
 // Insert professor data into the first database
     $pdo = Database::getInstance();
-    $stmt = $pdo->prepare("INSERT INTO professors (firstName, lastName, email, password) VALUES (:firstName, :lastName, :email, :password)");
+    $stmt = $pdo->prepare("INSERT INTO professors (firstName, lastName, email, password, pictureFile) 
+    VALUES (:firstName, :lastName, :email, :password, :pictureFile)");
 
     $stmt->bindParam(':firstName', $firstName);
     $stmt->bindParam(':lastName', $lastName);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':password', $password); // Assuming $password is already hashed
+    $stmt->bindParam(':pictureFile', $pictureFile);
 
     if (!$stmt->execute()) {
         echo "<p>Registration failed.</p>";
