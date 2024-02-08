@@ -8,8 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     updatePassword($email, $newPassword);
 
     // Display success message and redirect to index.html after 5 seconds
-    echo "Password updated successfully.";
-    echo "<meta http-equiv='refresh' content='5;url=index.html'>";
+    echo "Password updated successfully redirecting to login.";
+    echo "<meta http-equiv='refresh' content='5;url=/index.html'>";
 }
 
 function updatePassword($email, $newPassword)
