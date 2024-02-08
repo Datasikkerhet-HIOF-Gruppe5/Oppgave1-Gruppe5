@@ -19,4 +19,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['message_id'], $_POST['
     exit;
 }
 
-?>
+
