@@ -5,6 +5,11 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    if (!isset($_SESSION['failed_attempts'])) {
+        $_SESSION['failed_attempts'] = 0;
+        $_SESSION['last_attempt_time'] = time();
+    }
+
     // Handle anonymous login
     if (isset($_POST['subject_id']) && !empty($_POST['subject_id'])) {
         $_SESSION['user_id'] = $_POST['subject_id'];
@@ -18,6 +23,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!$email) {
         echo "Invalid email format.";
+        exit;
+    }
+
+    $current_time = time();
+    $time_since_last_attempt = $current_time - $_SESSION['last_attempt_time'];
+    $delay_seconds = calculateDelay($_SESSION['failed_attempts']); // You'll define this function
+
+    if ($time_since_last_attempt < $delay_seconds) {
+        $wait_time_seconds = $delay_seconds - $time_since_last_attempt;
+        echo "Please wait " . round($wait_time_seconds / 60, 2) . " more minutes before trying again.";
         exit;
     }
 
@@ -76,6 +91,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         default:
             echo "Invalid user role.";
             break;
+    }
+    function calculateDelay($attempts) {
+        $delays = [300, 600, 900, 1200, 2400, 3600, 10800, 21600, 43200]; // Delays in seconds
+        return isset($delays[$attempts]) ? $delays[$attempts] : end($delays); // Use last value if attempts exceed delays array
     }
 }
 
