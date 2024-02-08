@@ -8,7 +8,9 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 'anonymous') {
 }
 
 $pdo = Database::getInstance();
-$stmt = $pdo->prepare("SELECT id, subjectName FROM subjects");
+$stmt = $pdo->prepare("SELECT subjects.id, subjects.subjectName, professors.pictureFile
+                       FROM subjects
+                       INNER JOIN professors ON subjects.professor_id = professors.id");
 $stmt->execute();
 $subjects = $stmt->fetchAll();
 
@@ -24,13 +26,16 @@ echo '<!DOCTYPE html>
     <ul>';
 
 foreach ($subjects as $subject) {
-    echo "<li>" . htmlspecialchars($subject['subjectName']) . " 
-              <form action='' method='POST'>
-                  <input type='hidden' name='subject_id' value='" . $subject['id'] . "'>
-                  <input type='text' name='pin' placeholder='Enter PIN' required>
-                  <button type='submit'>View Messages</button>
-              </form>
-          </li>";
+    echo "<li>" . htmlspecialchars($subject['subjectName']) . "<br>";
+    if (!empty($subject['pictureFile'])) {
+        echo "<img src='../../uploads/" . $subject['pictureFile'] . "' alt='Lecturer Picture' style='max-width: 100px; max-height: 100px;'><br>";
+    }
+    echo "<form action='' method='POST'>
+              <input type='hidden' name='subject_id' value='" . $subject['id'] . "'>
+              <input type='text' name='pin' placeholder='Enter PIN' required>
+              <button type='submit'>View Messages</button>
+          </form>
+      </li>";
 }
 
 echo '</ul>';
@@ -92,3 +97,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['subject_id'], $_POST['
 
 echo '</body>
 </html>';
+?>

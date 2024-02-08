@@ -2,7 +2,7 @@
 session_start();
 
 include 'db_connect.php';
-
+$pdo = Database::getInstance();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role'])) {
     header("Location: login.php"); // Redirect to login if not logged in
     exit;
@@ -10,6 +10,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role'])) {
 
 if ($_SESSION['user_role'] == 'student') {
     // Fetch and display subjects for students
+
     $stmt = $pdo->prepare("SELECT * FROM subjects");
     $stmt->execute();
     $subjects = $stmt->fetchAll();
