@@ -1,5 +1,4 @@
 <?php
-
 include 'db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -7,6 +6,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newPassword = $_POST['new_password'];
 
     updatePassword($email, $newPassword);
+
+    // Display success message and redirect to index.html after 5 seconds
+    echo "Password updated successfully.";
+    echo "<meta http-equiv='refresh' content='5;url=index.html'>";
 }
 
 function updatePassword($email, $newPassword)
@@ -27,9 +30,5 @@ function updatePassword($email, $newPassword)
     $stmt = $pdo->prepare($deleteTokenQuery);
     $stmt->bindParam(':email', $email);
     $stmt->execute();
-
-    echo "Password updated successfully.";
 }
-
-
-
+?>
