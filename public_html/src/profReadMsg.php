@@ -27,6 +27,11 @@ echo '<!DOCTYPE html>
     <title>Chatroom</title>
 </head>
 <body>
+    <nav>
+        <ul>
+            <a href="../resources/changePassword.html">Bytt passord</a>
+        </ul>
+    </nav>
     <div id="messageArea" style="height: 300px; border: 1px solid #ccc; overflow-y: scroll;">';
 
 foreach ($messages as $message) {
