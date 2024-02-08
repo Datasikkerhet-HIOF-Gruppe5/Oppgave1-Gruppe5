@@ -6,29 +6,75 @@
     <title>Registrering</title>
 </head>
 <body>
-<h2>Registrering</h2>
-<label>Velg bruker</label> <br>
-<a href="resources/student.html">
-    <button>Student</button>
-</a>
-<a href="resources/professor.html">
-    <button>Foreleser</button>
-</a>
-<br>
-<br>
-<form action="src/login.php" method="POST">
-    <input type="hidden" name="subject_id" value="anonymous"> <!-- Hidden field for anonymous login -->
-    <button type="submit">Gjest innlogging</button>
-</form>
+    <h2>Registrering</h2>
+    <label>Velg bruker</label> <br>
+    <a href="resources/student.html" class="button-link">Student</a>
+    <a href="resources/professor.html" class="button-link">Foreleser</a>
+    <br>
+    <br>
+    <form action="src/login.php" method="POST">
+        <input type="hidden" name="subject_id" value="anonymous"> <!-- Hidden field for anonymous login -->
+        <button type="submit">Gjest innlogging</button>
+    </form>
 
-<h2>Allerede bruker?</h2>
-<form action="src/login.php" method="post">
-    <label for="email">Email:</label><br>
-    <input type="email" name="email" id="email" placeholder="example@example.com" size="30" autocomplete="email" required><br>
-    <label for="password">Passord:</label><br>
-    <input type="password" name="password" autocomplete="current-password" required><br>
-    <a href="resources/forgotPassword.html">Glemt passord?</a>
-    <input type="submit" name="login" value="Logg inn">
-</form>
+    <h2>Allerede bruker?</h2>
+    <form action="src/login.php" method="post">
+        <label for="email">Email:</label><br>
+        <input type="email" name="email" id="email" placeholder="example@example.com" size="30" autocomplete="email" required><br>
+        <label for="password">Passord:</label><br>
+        <input type="password" name="password" id="password" autocomplete="current-password" required><br>
+        <a href="resources/forgotPassword.html">Glemt passord?</a>
+        <input type="submit" name="login" value="Logg inn">
+    </form>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h2 {
+            color: #000080; /* Navy blue for headings */
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+        }
+        .button-link {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #008000; /* Green background */
+            color: white;
+            padding: 10px 20px;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        input[type="submit"], button {
+            background-color: #000080; /* Navy blue for buttons */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        a {
+            color: #0000ff; /* Basic blue for links */
+        }
+    </style>
 </body>
 </html>
+
