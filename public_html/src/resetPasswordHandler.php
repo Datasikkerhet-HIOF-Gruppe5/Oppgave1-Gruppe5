@@ -31,4 +31,4 @@ function updatePassword($email, $newPassword)
     $stmt->bindParam(':email', $email);
     $stmt->execute();
 }
-?>
+
