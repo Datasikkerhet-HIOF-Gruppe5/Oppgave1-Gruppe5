@@ -17,19 +17,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize firstname
     $firstName = filter_var($_POST['firstName'], FILTER_SANITIZE_STRING);
     if (!preg_match("/^[a-zA-Z-' ]*$/", $firstName) || strlen($firstName) > 50) {
-        die("Invalid name");
+        $response = array(
+            'status' => 'error',
+            'message' => 'Invalid name'
+        );
+        echo json_encode($response);
+        exit;
     }
     // Sanitize lastname
     $lastName = filter_var($_POST['lastName'], FILTER_SANITIZE_STRING);
     if (!preg_match("/^[a-zA-Z-' ]*$/", $lastName) || strlen($lastName) > 50) {
-        die("Invalid name");
+        $response = array(
+            'status' => 'error',
+            'message' => 'Invalid name'
+        );
+        echo json_encode($response);
+        exit;
     }
 
     // Validate and sanitize email
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
     if (!$email || strlen($email) > 100) {
-        die("Invalid email format");
+        $response = array(
+            'status' => 'error',
+            'message' => 'Invalid email format'
+        );
+        echo json_encode($response);
+        exit;
     }
+
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
     // Password hashing
@@ -44,7 +60,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'status' => 'error',
             'message' => 'Registration error: Duplicate information'
         );
-    }
+        echo json_encode($response);
+        exit;
+    } 
 
     try {
         $pdo = Database::getInstance();
@@ -66,5 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'status' => 'error',
             'message' => 'Error registering student: ' . $e->getMessage()
         );
-    } echo json_encode($response);
+    } 
+    echo json_encode($response);
 }
