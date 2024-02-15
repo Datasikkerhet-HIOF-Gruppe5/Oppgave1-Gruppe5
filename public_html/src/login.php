@@ -3,11 +3,42 @@
 include 'db_connect.php';
 session_start();
 
+// Function to get the number of failed attempts from session
+function getFailedAttempts() {
+    return isset($_SESSION['failed_attempts']) ? $_SESSION['failed_attempts'] : 0;
+}
+
+// Function to increment failed attempts
+function incrementFailedAttempts() {
+    $_SESSION['failed_attempts'] = getFailedAttempts() + 1;
+}
+
+// Function to reset failed attempts
+function resetFailedAttempts() {
+    $_SESSION['failed_attempts'] = 0;
+}
+
+// Function to check if cooldown is active
+function isCooldownActive() {
+    if (isset($_SESSION['cooldown_end_time']) && $_SESSION['cooldown_end_time'] > time()) {
+        return true;
+    }
+    return false;
+}
+
+// Function to activate cooldown
+function activateCooldown() {
+    $cooldown_duration = 60 * (pow(2, getFailedAttempts())); // Doubling cooldown duration
+    $_SESSION['cooldown_end_time'] = time() + $cooldown_duration;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if (!isset($_SESSION['failed_attempts'])) {
-        $_SESSION['failed_attempts'] = 0;
-        $_SESSION['last_attempt_time'] = time();
+    // Check if cooldown is active
+    if (isCooldownActive()) {
+        $remaining_cooldown = $_SESSION['cooldown_end_time'] - time();
+        echo "You have reached maximum failed attempts. Please try again after cooldown period. Cooldown remaining: $remaining_cooldown seconds";
+        exit;
     }
 
     // Handle anonymous login
@@ -26,16 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    $current_time = time();
-    $time_since_last_attempt = $current_time - $_SESSION['last_attempt_time'];
-    $delay_seconds = calculateDelay($_SESSION['failed_attempts']); // You'll define this function
-
-    if ($time_since_last_attempt < $delay_seconds) {
-        $wait_time_seconds = $delay_seconds - $time_since_last_attempt;
-        echo "Please wait " . round($wait_time_seconds / 60, 2) . " more minutes before trying again.";
-        exit;
-    }
-
     try {
         // Check if user is a student
         $pdo = Database::getInstance();
@@ -47,54 +68,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_role'] = 'student';
             echo "Student login successful.";
+            // Reset failed attempts on successful login
+            resetFailedAttempts();
             // Redirect to a student-specific page or dashboard if needed
             header("Location: ../src/studReadMsg.php");
             exit;
-
-        } else {
-            // If not a student, check if user is a professor
-            $stmt = $pdo->prepare("SELECT * FROM professors WHERE email = ?");
-            $stmt->execute([$email]);
-            $user = $stmt->fetch();
-
-            if ($user && password_verify($password, $user['password'])) {
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_role'] = 'professor';
-                echo "Professor login successful.";
-                // Redirect to a professor-specific page or dashboard if needed
-                header("Location: ../src/profReadMsg.php");
-                exit;
-            } else {
-                echo "Invalid credentials.";
-            }
         }
     } catch (PDOException $e) {
         // Handle database errors
         echo "Database error: " . $e->getMessage();
     }
 
-    if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role'])) {
-        header("Location: login.php");
-        exit;
+    try {
+        // Check if user is a professor
+        $pdo = Database::getInstance();
+        $stmt = $pdo->prepare("SELECT * FROM professors WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_role'] = 'professor';
+            echo "Professor login successful.";
+            // Reset failed attempts on successful login
+            resetFailedAttempts();
+            // Redirect to a professor-specific page or dashboard if needed
+            header("Location: ../src/profReadMsg.php");
+            exit;
+        }
+    } catch (PDOException $e) {
+        // Handle database errors
+        echo "Database error: " . $e->getMessage();
     }
 
-    switch ($_SESSION['user_role']) {
-        case 'student':
-            header("Location: ../src/studReadMsg.php");
-            break;
-        case 'professor':
-            header("Location: ../src/profReadMsg.php");
-            break;
-        case 'anonymous':
-            header("Location: ../src/anonReadMsg.php");
-            break;
-        default:
-            echo "Invalid user role.";
-            break;
+    // If the code reaches this point, it means login failed
+    incrementFailedAttempts();
+    echo "Invalid credentials.";
+
+    // Activate cooldown after maximum failed attempts
+    if (getFailedAttempts() >= 3) {
+        activateCooldown();
     }
-    function calculateDelay($attempts) {
-        $delays = [300, 600, 900, 1200, 2400, 3600, 10800, 21600, 43200]; // Delays in seconds
-        return isset($delays[$attempts]) ? $delays[$attempts] : end($delays); // Use last value if attempts exceed delays array
-    }
+
 }
 
