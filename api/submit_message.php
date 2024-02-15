@@ -14,16 +14,17 @@ if (!isset($_POST['student_id'])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get post data
-    $student_id = $_POST['student_id']; //TODO: Change DB and code to get student id
+    $student_id = $_POST['student_id'];
     $newMessage = $_POST['new_message'];
     $subjectId = $_POST['subject_id'];
 
     try {
         // Insert message into the database
         $pdo = Database::getInstance();
-        $stmt = $pdo->prepare("INSERT INTO messages (message, subject_id) VALUES (:message, :subject_id)");
+        $stmt = $pdo->prepare("INSERT INTO messages (message, subject_id, student_id) VALUES (:message, :subject_id, :student_id)");
         $stmt->bindParam(':message', $newMessage);
         $stmt->bindParam(':subject_id', $subjectId);
+        $stmt->bindParam(':student_id', $student_id);
         $stmt->execute();
 
         $response = array(

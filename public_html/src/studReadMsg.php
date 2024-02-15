@@ -15,10 +15,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['new_message'], $_POST['subject_id'])) {
         $newMessage = $_POST['new_message'];
         $subjectId = $_POST['subject_id'];
+        $student_id = $_SESSION['user_id'];
         // Insert new message into database (ensure you sanitize and validate this input)
-        $stmt = $pdo->prepare("INSERT INTO messages (message, subject_id) VALUES (:message, :subject_id)");
+        $stmt = $pdo->prepare("INSERT INTO messages (message, subject_id, student_id) VALUES (:message, :subject_id, :student_id)");
         $stmt->bindParam(':message', $newMessage);
         $stmt->bindParam(':subject_id', $subjectId);
+        $stmt->bindParam(':student_id', $student_id);
         $stmt->execute();
     } else if (isset($_POST['subject_id'])) {
         $subjectId = $_POST['subject_id'];
