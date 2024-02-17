@@ -53,7 +53,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['subject_id'], $_POST['
 
     if ($stmt->rowCount() > 0) {
         // Fetch messages for the subject
-        $stmt = $pdo->prepare("SELECT id, message, answer, anonymous_comment FROM messages WHERE subject_id = :subject_id");
+        $stmt = $pdo->prepare("SELECT m.id, m.message, m.answer, c.comment AS anonymous_comment
+                               FROM messages m
+                               LEFT JOIN comments c ON m.id = c.message_id
+                               WHERE m.subject_id = :subject_id");
         $stmt->bindParam(':subject_id', $subjectId);
         $stmt->execute();
         $messages = $stmt->fetchAll();
@@ -67,9 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['subject_id'], $_POST['
                 echo "<p>Professor reply: " . htmlspecialchars($message['answer']) . "</p>";
             }
 
-            // Form to submit an anonymous comment
+            // Display anonymous comment
             if (!empty($message['anonymous_comment'])) {
-                // If a comment exists, just display it
                 echo "<p>Anonymous comment: " . htmlspecialchars($message['anonymous_comment']) . "</p>";
             } else {
                 // Show form to submit a comment
@@ -97,4 +99,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['subject_id'], $_POST['
 
 echo '</body>
 </html>';
-
+?>

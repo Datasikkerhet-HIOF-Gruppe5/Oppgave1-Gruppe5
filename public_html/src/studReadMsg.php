@@ -27,9 +27,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Fetch messages for the selected subject
-    $stmt = $pdo->prepare("SELECT m.message, m.answer, m.anonymous_comment FROM messages m WHERE m.subject_id = ?");
-    $stmt->execute([$subjectId]);
-    $messages = $stmt->fetchAll();
+    if ($subjectId) {
+        $stmt = $pdo->prepare("SELECT m.message, m.answer, c.comment 
+                               FROM messages m 
+                               LEFT JOIN comments c ON m.id = c.message_id 
+                               WHERE m.subject_id = ?");
+        $stmt->execute([$subjectId]);
+        $messages = $stmt->fetchAll();
+    }
 }
 
 // Fetch all subjects
@@ -69,9 +74,8 @@ if ($subjectId) {
         if (!empty($message['answer'])) {
             echo "<p>Professor reply: " . htmlspecialchars($message['answer']) . "</p>";
         }
-        if (!empty($message['anonymous_comment'])) {
-            echo "<p>Anonymous comment: " . htmlspecialchars($message['anonymous_comment']) . "</p>";
-            echo "<hr>";
+        if (!empty($message['comment'])) {
+            echo "<p>Anonymous comment: " . htmlspecialchars($message['comment']) . "</p>";
         }
         echo "</div><br>";
     }
@@ -86,4 +90,4 @@ if ($subjectId) {
 
 echo '</body>
 </html>';
-
+?>
