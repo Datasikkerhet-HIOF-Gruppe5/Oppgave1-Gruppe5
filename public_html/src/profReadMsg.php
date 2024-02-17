@@ -10,10 +10,12 @@ if (!isset($_SESSION['user_id'])) {
 $professorId = $_SESSION['user_id'];
 
 $pdo = Database::getInstance();
-$stmt = $pdo->prepare("SELECT m.id, m.message, m.answer, m.anonymous_comment, s.subjectName AS subject_name 
+$stmt = $pdo->prepare("SELECT m.id, m.message, m.answer, GROUP_CONCAT(c.comment SEPARATOR '|') AS comments, s.subjectName AS subject_name 
                        FROM messages m 
                        JOIN subjects s ON m.subject_id = s.id 
-                       WHERE s.professor_id = ?");
+                       LEFT JOIN comments c ON m.id = c.message_id 
+                       WHERE s.professor_id = ?
+                       GROUP BY m.id");
 $stmt->execute([$professorId]);
 
 $messages = $stmt->fetchAll();
@@ -43,21 +45,17 @@ foreach ($messages as $message) {
         echo "<p><strong>Professor reply:</strong> " . htmlspecialchars($message['answer']) . "</p>";
     }
 
-    if (!empty($message['anonymous_comment'])) {
-        echo "<p><strong>Anonymous comment:</strong> " . htmlspecialchars($message['anonymous_comment']) . "</p>";
-        echo "<hr>";
-    } else {
-        echo "<form action='profReplyMsg.php' method='POST'>";
-        echo "<input type='hidden' name='message_id' value='" . $message['id'] . "'>";
-        echo "<input type='text' name='reply' placeholder='Reply to this message'>";
-        echo "<button type='submit'>Send Reply</button>";
-        echo "</form>";
+    if (!empty($message['comments'])) {
+        $comments = explode('|', $message['comments']);
+        foreach ($comments as $comment) {
+            echo "<p><strong>Anonymous comment:</strong> " . htmlspecialchars($comment) . "</p>";
+        }
     }
+
     echo "</div><br>";
 }
 
 echo '</div>
 </body>
 </html>';
-
-
+?>
