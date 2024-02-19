@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prosjektdokumentasjon</title>
+</head>
+<body>
+<h1>Prosjektdokumentasjon</h1>
+<h2>Oversikt</h2>
+<p> Dette prosjektet er en webapplikasjon designet for Datasikkerhet i utvikling og drift Steg 1. Dette prosjektet har blitt utviklet for å håndtere interaksjoner mellom studenter, professorer og anonyme brukere i et utdanningsmiljø. Den inneholder funksjonalitet for å vise, sende og svare på meldinger, samt rapportere meldinger. </p>
+<h2>Implementerte funksjonaliteter</h2>
+<ul>
+    <li>Brukerregistrering og autentisering</li>
+    <li>Håndtering av passord (Glemt passord, Bytt passord)</li>
+    <li>Håndtering av meldinger (Visning, Skriving, Svar, Rapportering)</li>
+    <li>Emnevalg</li>
+    <li>Student: <ul>
+        <li>Studenter kan velge fag og se meldinger relatert til disse fagene.</li>
+        <li>De kan også sende nye meldinger som er synlige for professorer og anonyme brukere.</li>
+    </ul>
+    </li>
+    <li>Professor: <ul>
+        <li>Professorer kan se meldinger knyttet til fagene de underviser i.</li>
+        <li>De kan svare på studentmeldinger, og disse svarene er synlige for både studenter og anonyme brukere.</li>
+    </ul>
+    </li>
+    <li>Anonym: <ul>
+        <li>Anonyme brukere kan se meldinger ved å skrive inn en PIN-kode som er unik for hvert fag.</li>
+        <li>De kan kommentere på studentmeldinger og rapportere dem ved mistanke om upassende innhold.</li>
+    </ul>
+    </li>
+    <li>Rapporteringsfunksjon: <ul>
+        <li>En "Rapporter melding"-funksjon er tilgjengelig for anonyme brukere for å rapportere bekymringsfulle eller upassende meldinger.</li>
+    </ul>
+    </li>
+    <li>Glemt passordfunksjon: <ul>
+        <li>En "Glemt passord"-funksjon er tilgjengelig for studenter og professorer for å endre passord hvis man glemmer kontoens passord.</li>
+    </ul>
+    </li>
+</ul>
+<h2>Verktøy og teknikker</h2>
+<p> Prosjektet ble implementert ved bruk av følgende verktøy og teknikker:
+<ul>
+    <li>Skjemavalidering og datarensing for sikkerhet</li>
+    <li>Backend: PHP og MySQL <ul>
+        <li>PHP brukes for server-side logikk.</li>
+        <li>MySQL for databasehåndtering av brukerdata, meldinger, kommentarer, og rapporter.</li>
+        <li>Sendmail brukes til å sende resetpassord-e-post gjennom Google sin SMTP-server.</li>
+    </ul>
+    </li>
+    <li>Frontend: <ul>
+        <li>Enkel HTML brukes for å strukturere nettsidens innhold.</li>
+    </ul>
+    </li>
+    <li>Session Management: <ul>
+        <li>PHP session brukes for å håndtere brukersesjoner og tilgangskontroll.</li>
+    </ul>
+    </li>
+</ul>
+</p>
+<h2>Gruppemedlemmer</h2>
+<ul>
+    <li>Marianne Gellein Olsen - marianne.g.olsen@hiof.no</li>
+    <li>Alexander Gjøstøl Karlsen - alexagk@hiof.no</li>
+    <li>Bardh Arifi - bardh.arifi@hiof.no</li>
+    <li>Herman Fagerlie - hermanfa@hiof.no</li>
+</ul>
+</body>
+</html>
