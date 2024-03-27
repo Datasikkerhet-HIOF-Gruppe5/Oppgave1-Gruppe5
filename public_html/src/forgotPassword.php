@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Send the email
             mail($email, $subject, $message);
 
-            echo "Password reset email sent.";
+            echo "Password reset email sent, if email exists.";
         }
     } catch (PDOException $e) {
         echo "Database error: " . $e->getMessage();
