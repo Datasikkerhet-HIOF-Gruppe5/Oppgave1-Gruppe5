@@ -12,6 +12,11 @@ $messages = [];
 
 // Handle new message submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Check if user is logged in before processing POST request
+    if (!isset($_SESSION['user_id'])) {
+        exit('Access Denied');
+    }
+
     if (isset($_POST['new_message'], $_POST['subject_id'])) {
         $newMessage = $_POST['new_message'];
         $subjectId = $_POST['subject_id'];
