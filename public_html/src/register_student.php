@@ -3,16 +3,16 @@
 include 'db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     // Sanitize firstname
     $firstName = filter_var($_POST['firstName'], FILTER_SANITIZE_STRING);
     if (!preg_match("/^[a-zA-Z-' ]*$/", $firstName) || strlen($firstName) > 50) {
-        die("Invalid name");
+        die("Invalid first name");
     }
+
     // Sanitize lastname
     $lastName = filter_var($_POST['lastName'], FILTER_SANITIZE_STRING);
     if (!preg_match("/^[a-zA-Z-' ]*$/", $lastName) || strlen($lastName) > 50) {
-        die("Invalid name");
+        die("Invalid last name");
     }
 
     // Validate and sanitize email
@@ -22,8 +22,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
+    // Password rules
+    $password = $_POST['password'];
+    if (strlen($password) < 10) {
+        die("Password must be at least 10 characters long");
+    }
+    if (!preg_match('/[A-Z]/', $password)) {
+        die("Password must contain at least one uppercase letter");
+    }
+    if (!preg_match('/[a-z]/', $password)) {
+        die("Password must contain at least one lowercase letter");
+    }
+    if (!preg_match('/[0-9]/', $password)) {
+        die("Password must contain at least one digit");
+    }
+    if (!preg_match('/[^A-Za-z0-9]/', $password)) {
+        die("Password must contain at least one special character");
+    }
+
     // Password hashing
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $password = password_hash($password, PASSWORD_DEFAULT);
 
     // Check if email already exists
     $checkEmail = checkEmailExistence($email);
@@ -32,14 +50,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Registration error: Duplicate information");
     }
 
-// Insert student data into the database
+    // Insert student data into the database
     $pdo = Database::getInstance();
-    $stmt = $pdo->prepare("INSERT INTO students (firstName, lastName, email, fieldOfStudy, classOf, password) VALUES (:firstName, :lastName, :email, :fieldOfStudy, :classOf, :password)");
+    $stmt = $pdo->prepare("INSERT INTO students (firstName, lastName, email, password) VALUES (:firstName, :lastName, :email, :password)");
     $stmt->bindParam(':firstName', $firstName);
     $stmt->bindParam(':lastName', $lastName);
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':fieldOfStudy', $fieldOfStudy);
-    $stmt->bindParam(':classOf', $classOf);
     $stmt->bindParam(':password', $password);
 
     if ($stmt->execute()) {
@@ -60,4 +76,4 @@ function checkEmailExistence($email) {
 
     return is_array($stmt->fetch(PDO::FETCH_ASSOC));
 }
-
+?>

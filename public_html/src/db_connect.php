@@ -15,10 +15,10 @@ class Database
 
     private static function createConnection()
     {
-        $host = 'localhost';
-        $db   = 'dbname';
-        $user = 'username';
-        $pass = 'password';
+        $host = '';
+        $db   = '';
+        $user = '';
+        $pass = '';
         $charset = 'utf8mb4';
 
         $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
