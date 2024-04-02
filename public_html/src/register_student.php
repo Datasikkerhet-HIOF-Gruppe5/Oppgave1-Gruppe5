@@ -2,7 +2,11 @@
 
 include 'db_connect.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Check if CSRF token is set and valid
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
 
     // Sanitize firstname
     $firstName = filter_var($_POST['firstName'], FILTER_SANITIZE_STRING);

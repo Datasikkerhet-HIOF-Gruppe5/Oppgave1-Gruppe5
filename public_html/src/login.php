@@ -2,6 +2,9 @@
 
 include 'db_connect.php';
 session_start();
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
 // Function to get the number of failed attempts from session
 function getFailedAttempts() {

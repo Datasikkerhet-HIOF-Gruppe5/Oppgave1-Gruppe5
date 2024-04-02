@@ -13,7 +13,12 @@ function checkEmailExistence($email) {
     return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Check if CSRF token is set and valid
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
+
     // Sanitize name
     $firstName = filter_var($_POST['firstName'], FILTER_SANITIZE_STRING);
     if (!preg_match("/^[a-zA-Z-' ]*$/", $firstName) || strlen($firstName) > 50) {
@@ -46,6 +51,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fileSize = $_FILES['picture']['size'];
     $pictureFile = NULL;
 
+    if ($fileSize > 0 && $fileSize < 500000) {
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($pictureFile);
+
+        if (in_array($mime, ['image/jpeg', 'image/png'])) {
+            $pictureFile = uniqid('', true) . ".jpg";
+            $fileDestination = '../../uploads/' . '/' . $pictureFile;
+
+            if (move_uploaded_file($pictureFile, $fileDestination)) {
+                // File upload successful
+            } else {
+                echo 'There was an error uploading your picture.';
+            }
+        } else {
+            echo 'Invalid file type. Only JPG and PNG are allowed.';
+        }
+    } else {
+        echo ' File size is either too large or missing.';
+    }
+    /* FJERNES OM KODE OVER FUNGERER
     if ($fileSize !== 0) {
         $fileName = $_FILES['picture']['name'];
         $fileTmpName = $_FILES['picture']['tmp_name'];
@@ -67,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo 'There was an error uploading your picture';
         }
     }
-
+    */
 // Insert professor data into the first database
     $pdo = Database::getInstance();
     $stmt = $pdo->prepare("INSERT INTO professors (firstName, lastName, email, password, pictureFile) 
