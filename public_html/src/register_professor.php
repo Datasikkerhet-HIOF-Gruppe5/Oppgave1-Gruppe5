@@ -1,9 +1,11 @@
 <?php
 
 include 'db_connect.php';
+include_once  '../../api/logger.php';
 
-function checkEmailExistence($email) {
-    $pdo = Database::getInstance();
+function checkEmailExistence($email): bool
+{
+    $pdo = db_connect::getInstance();
 
     $query = "SELECT * FROM professors WHERE email = :email LIMIT 1";
     $stmt = $pdo->prepare($query);
@@ -94,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     */
 // Insert professor data into the first database
-    $pdo = Database::getInstance();
+    $pdo = db_connect::getInstance();
     $stmt = $pdo->prepare("INSERT INTO professors (firstName, lastName, email, password, pictureFile) 
     VALUES (:firstName, :lastName, :email, :password, :pictureFile)");
 
@@ -106,7 +108,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (!$stmt->execute()) {
         echo "<p>Registration failed.</p>";
-        // Handle error, possibly exit script
     }
 
 // Get the last inserted professor's ID
@@ -126,6 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Execute the statement and check for errors
         if ($stmt->execute()) {
+            writeToLog("Created a new user. Type: Professor.");
             echo "<p>Professor and subject registration successful.</p>";
             echo "<p>Redirecting back to login...</p>";
             header("Refresh:3; url=../index.html"); // Redirect to login.php after 3 seconds

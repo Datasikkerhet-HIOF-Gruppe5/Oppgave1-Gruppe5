@@ -3,11 +3,11 @@ include 'db_connect.php';
 session_start();
 
 // Check if the user is logged in as anonymous
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 'anonymous') {
+if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'anonymous') {
     exit('Access Denied');
 }
 
-$pdo = Database::getInstance();
+$pdo = db_connect::getInstance();
 $stmt = $pdo->prepare("SELECT subjects.id, subjects.subjectName, professors.pictureFile
                        FROM subjects
                        INNER JOIN professors ON subjects.professor_id = professors.id");
@@ -41,7 +41,7 @@ foreach ($subjects as $subject) {
 echo '</ul>';
 
 // Handling PIN submission and displaying messages
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['subject_id'], $_POST['pin'])) {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['subject_id'], $_POST['pin'])) {
     $subjectId = $_POST['subject_id'];
     $enteredPIN = $_POST['pin'];
 

@@ -1,11 +1,11 @@
 <?php
 include 'db_connect.php';
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
 
     try {
-        $pdo = Database::getInstance();
+        $pdo = db_connect::getInstance();
         $stmt = $pdo->prepare("SELECT * FROM students WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();

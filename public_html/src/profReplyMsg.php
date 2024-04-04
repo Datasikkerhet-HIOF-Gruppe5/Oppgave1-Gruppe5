@@ -7,8 +7,8 @@ if (!isset($_SESSION['user_id'])) {
     exit('Access Denied');
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['message_id'], $_POST['reply'])) {
-    $pdo = Database::getInstance();
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['message_id'], $_POST['reply'])) {
+    $pdo = db_connect::getInstance();
     $stmt = $pdo->prepare("UPDATE messages SET answer = :answer WHERE id = :message_id");
     $stmt->bindParam(':answer', $_POST['reply']);
     $stmt->bindParam(':message_id', $_POST['message_id']);

@@ -12,7 +12,7 @@ if (!isset($_POST['student_id'])) {
     exit;
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Get post data
     $student_id = $_POST['student_id'];
     $newMessage = $_POST['new_message'];
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         // Insert message into the database
-        $pdo = Database::getInstance();
+        $pdo = db_connect::getInstance();
         $stmt = $pdo->prepare("INSERT INTO messages (message, subject_id, student_id) VALUES (:message, :subject_id, :student_id)");
         $stmt->bindParam(':message', $newMessage);
         $stmt->bindParam(':subject_id', $subjectId);

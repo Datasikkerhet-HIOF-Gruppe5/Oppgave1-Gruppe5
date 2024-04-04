@@ -2,15 +2,15 @@
 include 'db_connect.php';
 session_start();
 
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 'anonymous') {
+if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'anonymous') {
     exit('Access Denied');
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['message_id'], $_POST['report_text'])) {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['message_id'], $_POST['report_text'])) {
     $messageId = $_POST['message_id'];
     $reportText = $_POST['report_text'];
 
-    $pdo = Database::getInstance();
+    $pdo = db_connect::getInstance();
     // Insert the anonymous report into the database
     $stmt = $pdo->prepare("INSERT INTO message_reports (message_id, report_text) VALUES (:message_id, :report_text)");
     $stmt->bindParam(':message_id', $messageId);

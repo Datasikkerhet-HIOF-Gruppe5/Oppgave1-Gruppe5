@@ -22,20 +22,18 @@ function resetFailedAttempts() {
 }
 
 // Function to check if cooldown is active
-function isCooldownActive() {
-    if (isset($_SESSION['cooldown_end_time']) && $_SESSION['cooldown_end_time'] > time()) {
-        return true;
-    }
-    return false;
+function isCooldownActive(): bool
+{
+    return isset($_SESSION['cooldown_end_time']) && $_SESSION['cooldown_end_time'] > time();
 }
 
 // Function to activate cooldown
 function activateCooldown() {
-    $cooldown_duration = 60 * (pow(2, getFailedAttempts())); // Doubling cooldown duration
+    $cooldown_duration = 60 * (2 ** getFailedAttempts()); // Doubling cooldown duration
     $_SESSION['cooldown_end_time'] = time() + $cooldown_duration;
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Check if cooldown is active
     if (isCooldownActive()) {
@@ -45,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Handle anonymous login
-    if (isset($_POST['subject_id']) && !empty($_POST['subject_id'])) {
+    if (!empty($_POST['subject_id'])) {
         $_SESSION['user_id'] = $_POST['subject_id'];
         $_SESSION['user_role'] = 'anonymous';
         header("Location: ../src/anonReadMsg.php");
@@ -62,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         // Check if user is a student
-        $pdo = Database::getInstance();
+        $pdo = db_connect::getInstance();
         $stmt = $pdo->prepare("SELECT * FROM students WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
@@ -84,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         // Check if user is a professor
-        $pdo = Database::getInstance();
+        $pdo = db_connect::getInstance();
         $stmt = $pdo->prepare("SELECT * FROM professors WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();

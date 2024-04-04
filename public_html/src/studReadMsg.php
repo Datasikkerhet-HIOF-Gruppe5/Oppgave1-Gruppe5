@@ -6,12 +6,12 @@ if (!isset($_SESSION['user_id'])) {
     exit('Access Denied');
 }
 
-$pdo = Database::getInstance();
+$pdo = db_connect::getInstance();
 $subjectId = null;
 $messages = [];
 
 // Handle new message submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Check if user is logged in before processing POST request
     if (!isset($_SESSION['user_id'])) {
         exit('Access Denied');

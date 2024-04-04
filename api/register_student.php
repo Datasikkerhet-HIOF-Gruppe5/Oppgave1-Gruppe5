@@ -2,10 +2,10 @@
 
 include 'db_connect.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     function checkEmailExistence($email) {
-        $pdo = Database::getInstance();
+        $pdo = db_connect::getInstance();
         $query = "SELECT * FROM students WHERE email = :email LIMIT 1";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':email', $email);
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } 
 
     try {
-        $pdo = Database::getInstance();
+        $pdo = db_connect::getInstance();
         $stmt = $pdo->prepare("INSERT INTO students (firstName, lastName, email, fieldOfStudy, classOf, password) VALUES (:firstName, :lastName, :email, :fieldOfStudy, :classOf, :password)");
         $stmt->bindParam(':firstName', $firstName);
         $stmt->bindParam(':lastName', $lastName);

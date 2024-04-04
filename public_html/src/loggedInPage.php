@@ -2,13 +2,13 @@
 session_start();
 
 include 'db_connect.php';
-$pdo = Database::getInstance();
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role'])) {
+$pdo = db_connect::getInstance();
+if (!isset($_SESSION['user_id'], $_SESSION['user_role'])) {
     header("Location: login.php"); // Redirect to login if not logged in
     exit;
 }
 
-if ($_SESSION['user_role'] == 'student') {
+if ($_SESSION['user_role'] === 'student') {
     // Fetch and display subjects for students
 
     $stmt = $pdo->prepare("SELECT * FROM subjects");
@@ -18,7 +18,7 @@ if ($_SESSION['user_role'] == 'student') {
     foreach ($subjects as $subject) {
         echo "<a href='send_message.php?subject_id=" . $subject['id'] . "'>" . htmlspecialchars($subject['name']) . " (" . htmlspecialchars($subject['code']) . ")</a><br>";
     }
-} elseif ($_SESSION['user_role'] == 'professor') {
+} elseif ($_SESSION['user_role'] === 'professor') {
     // Fetch and display messages for the professor
     $stmt = $pdo->prepare("SELECT * FROM messages WHERE professor_id = ?");
     $stmt->execute([$_SESSION['user_id']]);

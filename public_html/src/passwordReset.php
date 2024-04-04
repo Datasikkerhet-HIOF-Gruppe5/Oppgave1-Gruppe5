@@ -3,11 +3,11 @@
 include 'db_connect.php';
 session_start();
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
+if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $token = $_GET['token'];
 
     // Validate the token
-    $pdo = Database::getInstance();
+    $pdo = db_connect::getInstance();
     $currentTime = time();
 
     $tokenQuery = "SELECT * FROM password_reset WHERE token = ? AND expiry_time > ?";
@@ -29,5 +29,3 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     echo "<input type='submit' value='Reset Password'>";
     echo "</form>";
 }
-
-

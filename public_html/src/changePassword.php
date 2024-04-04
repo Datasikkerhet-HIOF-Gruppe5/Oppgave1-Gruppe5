@@ -2,9 +2,9 @@
 session_start();
 
 include 'db_connect.php';
-$pdo = Database::getInstance();
+$pdo = db_connect::getInstance();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     updatePassword($_POST, $pdo);
 }
 

@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $professorId = $_SESSION['user_id'];
 
-$pdo = Database::getInstance();
+$pdo = db_connect::getInstance();
 $stmt = $pdo->prepare("SELECT m.id, m.message, m.answer, GROUP_CONCAT(c.comment SEPARATOR '|') AS comments, s.subjectName AS subject_name 
                        FROM messages m 
                        JOIN subjects s ON m.subject_id = s.id 

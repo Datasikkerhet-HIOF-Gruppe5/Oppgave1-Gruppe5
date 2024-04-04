@@ -1,11 +1,11 @@
 <?php
-class Database
+class db_connect
 {
     private static $pdo;
 
     private function __construct() {}
 
-    public static function getInstance()
+    public static function getInstance(): PDO
     {
         if (!self::$pdo) {
             self::$pdo = self::createConnection();
@@ -13,7 +13,7 @@ class Database
         return self::$pdo;
     }
 
-    private static function createConnection()
+    private static function createConnection(): PDO
     {
         $host = 'localhost';
         $db   = 'dbname';

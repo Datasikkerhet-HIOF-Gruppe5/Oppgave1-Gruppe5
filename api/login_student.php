@@ -2,14 +2,14 @@
 // Include database connection
 include_once 'db_connect.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Get post data
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     try {
         // Prepare SQL statement to fetch student data based on email
-        $pdo = Database::getInstance();
+        $pdo = db_connect::getInstance();
         $stmt = $pdo->prepare("SELECT * FROM students WHERE email = :email");
         $stmt->bindParam(':email', $email);
         $stmt->execute();

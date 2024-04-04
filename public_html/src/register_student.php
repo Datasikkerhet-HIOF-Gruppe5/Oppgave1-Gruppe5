@@ -1,6 +1,7 @@
 <?php
 
 include 'db_connect.php';
+include_once  '../../api/logger.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Check if CSRF token is set and valid
@@ -37,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
 // Insert student data into the database
-    $pdo = Database::getInstance();
+    $pdo = db_connect::getInstance();
     $stmt = $pdo->prepare("INSERT INTO students (firstName, lastName, email, fieldOfStudy, classOf, password) VALUES (:firstName, :lastName, :email, :fieldOfStudy, :classOf, :password)");
     $stmt->bindParam(':firstName', $firstName);
     $stmt->bindParam(':lastName', $lastName);
@@ -47,6 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->bindParam(':password', $password);
 
     if ($stmt->execute()) {
+        writeToLog("Created a new user. Type: Student.");
         echo "<p>Registration successful.</p>";
         echo "<p>Redirecting back to login...</p>";
         header("Refresh:3; url=../index.html"); // Redirect to login.php after 3 seconds
@@ -55,8 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-function checkEmailExistence($email) {
-    $pdo = Database::getInstance();
+function checkEmailExistence($email): bool
+{
+    $pdo = db_connect::getInstance();
     $query = "SELECT * FROM students WHERE email = :email LIMIT 1";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':email', $email);
