@@ -1,8 +1,13 @@
 <?php
 include 'db_connect.php';
 include_once  '../../api/logger.php';
+require_once  '../../api/init.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
+
     $email = $_POST['email'];
     $newPassword = $_POST['new_password'];
 

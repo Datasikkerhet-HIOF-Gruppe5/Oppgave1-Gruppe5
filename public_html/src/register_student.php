@@ -2,6 +2,7 @@
 
 include 'db_connect.php';
 include_once  '../../api/logger.php';
+require_once  '../../api/init.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Check if CSRF token is set and valid

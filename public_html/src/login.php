@@ -1,10 +1,7 @@
 <?php
 
 include 'db_connect.php';
-session_start();
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
+require_once  '../../api/init.php';
 
 // Function to get the number of failed attempts from session
 function getFailedAttempts() {
@@ -34,6 +31,9 @@ function activateCooldown() {
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
 
     // Check if cooldown is active
     if (isCooldownActive()) {

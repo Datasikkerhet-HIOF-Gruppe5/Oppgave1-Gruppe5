@@ -2,6 +2,7 @@
 
 include 'db_connect.php';
 include_once  '../../api/logger.php';
+require_once  '../../api/init.php';
 
 function checkEmailExistence($email): bool
 {
