@@ -4,7 +4,8 @@ include 'db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    function checkEmailExistence($email) {
+    function checkEmailExistence($email): bool
+    {
         $pdo = db_connect::getInstance();
         $query = "SELECT * FROM students WHERE email = :email LIMIT 1";
         $stmt = $pdo->prepare($query);

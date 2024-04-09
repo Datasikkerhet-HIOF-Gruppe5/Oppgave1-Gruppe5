@@ -31,7 +31,7 @@ echo '<!DOCTYPE html>
 <body>
     <nav>
         <ul>
-            <a href="../resources/changePassword.html">Bytt passord</a>
+            <a href="../resources/changePassword.php">Bytt passord</a>
         </ul>
     </nav>
     <div id="messageArea" style="height: 300px; border: 1px solid #ccc; overflow-y: scroll;">';

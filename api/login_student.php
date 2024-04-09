@@ -18,8 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $student = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Fetch subjects
-        $stmt = $pdo->prepare("SELECT * FROM subjects");
-        $stmt->execute();
+        $stmt = $pdo->query("SELECT * FROM subjects");
         $subjects = $stmt->fetchAll();
     
         // Verify password
