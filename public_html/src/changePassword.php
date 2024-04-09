@@ -37,7 +37,7 @@ function updatePassword($data, $pdo)
     $stmt->bindParam(':id', $professorId);
     $stmt->execute();
 
-    die("Password updated successfully. <a href='../index.html'>Go back to login</a>");
+    die("Password updated successfully. <a href='../index.php'>Go back to login</a>");
 }
 
 

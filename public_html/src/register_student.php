@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         writeToLog("Created a new user. Type: Student.");
         echo "<p>Registration successful.</p>";
         echo "<p>Redirecting back to login...</p>";
-        header("Refresh:3; url=../index.html"); // Redirect to login.php after 3 seconds
+        header("Refresh:3; url=../index.php"); // Redirect to login.php after 3 seconds
     } else {
         echo "<p>Registration failed.</p>";
     }

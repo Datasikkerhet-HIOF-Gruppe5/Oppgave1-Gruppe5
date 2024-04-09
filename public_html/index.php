@@ -1,3 +1,7 @@
+<?php
+require_once  '../api/init.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +19,7 @@
 <br>
 <br>
 <form action="src/login.php" method="POST">
+    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
     <input type="hidden" name="subject_id" value="anonymous"> <!-- Hidden field for anonymous login -->
     <button type="submit">Gjest innlogging</button>
 </form>

@@ -15,10 +15,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $sanitizedEmail = filter_var($email, FILTER_SANITIZE_EMAIL);
 
-    // Display success message and redirect to index.html after 5 seconds
+    // Display success message and redirect to index.php after 5 seconds
     writeToLog("Password reset successful for user: " . $sanitizedEmail);
     echo "Password updated successfully redirecting to login.";
-    echo "<meta http-equiv='refresh' content='5;url=http://158.39.188.207/steg1/public_html/index.html'>";
+    echo "<meta http-equiv='refresh' content='5;url=http://158.39.188.207/steg1/public_html/index.php'>";
 }
 
 function updatePassword($email, $newPassword)
