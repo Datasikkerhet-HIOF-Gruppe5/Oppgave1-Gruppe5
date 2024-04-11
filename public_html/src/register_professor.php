@@ -43,19 +43,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Password rules
     $password = $_POST['password'];
     if (strlen($password) < 10) {
-        throw new Exception("Password must be at least 10 characters long");
+        die("Password must be at least 10 characters long");
     }
     if (!preg_match('/[A-Z]/', $password)) {
-        throw new Exception("Password must contain at least one uppercase letter");
+        die("Password must contain at least one uppercase letter");
     }
     if (!preg_match('/[a-z]/', $password)) {
-        throw new Exception("Password must contain at least one lowercase letter");
+        die("Password must contain at least one lowercase letter");
     }
     if (!preg_match('/[0-9]/', $password)) {
-        throw new Exception("Password must contain at least one digit");
+        die("Password must contain at least one digit");
     }
     if (!preg_match('/[^A-Za-z0-9]/', $password)) {
-        throw new Exception("Password must contain at least one special character");
+        die("Password must contain at least one special character");
     }
 
     // Password hashing
@@ -68,31 +68,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         die("Registration error: Duplicate information");
     }
 
-// Handling file upload
+    // Handling file upload
     $fileSize = $_FILES['picture']['size'];
-    $temporaryFile = $_FILES['picture']['tmp_name'];  // Use the temporary file name
+    $pictureFile = NULL;
 
     if ($fileSize > 0 && $fileSize < 500000) {
         $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $mime = $finfo->file($temporaryFile);  // Use the temporary file for MIME type check
+        $mime = $finfo->file($pictureFile);
 
         if (in_array($mime, ['image/jpeg', 'image/png'])) {
             $pictureFile = uniqid('', true) . ".jpg";
-            $fileDestination = '../../uploads/' . $pictureFile;  // Corrected the file path
+            $fileDestination = '../../uploads/' . '/' . $pictureFile;
 
-            if (move_uploaded_file($temporaryFile, $fileDestination)) {
+            if (move_uploaded_file($pictureFile, $fileDestination)) {
                 // File upload successful
             } else {
-                echo 'There was an error uploading your picture.';
+                die("There was an error uploading your picture.");
             }
         } else {
-            echo 'Invalid file type. Only JPG and PNG are allowed.';
+            die("Invalid file type. Only JPG and PNG are allowed.");
         }
     } else {
-        echo ' File size is either too large or missing.';
+        die("File size is either too large or missing.");
     }
 
-// Insert professor data into the first database
+    // Insert professor data into the database
     $pdo = Database::getInstance();
     $stmt = $pdo->prepare("INSERT INTO professors (firstName, lastName, email, password, pictureFile) 
     VALUES (:firstName, :lastName, :email, :password, :pictureFile)");
@@ -104,17 +104,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->bindParam(':pictureFile', $pictureFile);
 
     if (!$stmt->execute()) {
-        echo "<p>Registration failed.</p>";
+        die("Registration failed.");
     }
 
-// Get the last inserted professor's ID
+    // Get the last inserted professor's ID
     $professorId = $pdo->lastInsertId();
 
-// Fetch and sanitize subjectName and subjectPIN from the form
+    // Fetch and sanitize subjectName and subjectPIN from the form
     $subjectName = isset($_POST['subjectName']) ? filter_var($_POST['subjectName'], FILTER_SANITIZE_STRING) : '';
     $subjectPIN = isset($_POST['subjectPIN']) ? filter_var($_POST['subjectPIN'], FILTER_SANITIZE_STRING) : '';
 
-// Check if subjectName and subjectPIN are not empty
+    // Check if subjectName and subjectPIN are not empty
     if (!empty($subjectName) && !empty($subjectPIN)) {
         // Prepare the SQL statement for the subjects table
         $stmt = $pdo->prepare("INSERT INTO subjects (subjectName, subjectPIN, professor_id) VALUES (:subjectName, :subjectPIN, :professorId)");
@@ -129,10 +129,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             echo "<p>Redirecting back to login...</p>";
             header("Refresh:3; url=../index.php"); // Redirect to login.php after 3 seconds
         } else {
-            echo "<p>Professor or subject registration failed.</p>";
+            die("Professor or subject registration failed.");
         }
     } else {
-        echo "<p>Missing subject name or PIN.</p>";
+        die("Missing subject name or PIN.");
     }
 }
-
+?>
