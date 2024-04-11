@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         // Check if user is a student
-        $pdo = db_connect::getInstance();
+        $pdo = Database::getInstance();
         $stmt = $pdo->prepare("SELECT * FROM students WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         // Check if user is a professor
-        $pdo = db_connect::getInstance();
+        $pdo = Database::getInstance();
         $stmt = $pdo->prepare("SELECT * FROM professors WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();

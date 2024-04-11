@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
     exit('Access Denied');
 }
 
-$pdo = db_connect::getInstance();
+$pdo = Database::getInstance();
 $subjectId = null;
 $messages = [];
 

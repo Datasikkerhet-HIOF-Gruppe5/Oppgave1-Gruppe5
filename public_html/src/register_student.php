@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
 // Insert student data into the database
-    $pdo = db_connect::getInstance();
+    $pdo = Database::getInstance();
     $stmt = $pdo->prepare("INSERT INTO students (firstName, lastName, email, fieldOfStudy, classOf, password) VALUES (:firstName, :lastName, :email, :fieldOfStudy, :classOf, :password)");
     $stmt->bindParam(':firstName', $firstName);
     $stmt->bindParam(':lastName', $lastName);
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 function checkEmailExistence($email): bool
 {
-    $pdo = db_connect::getInstance();
+    $pdo = Database::getInstance();
     $query = "SELECT * FROM students WHERE email = :email LIMIT 1";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':email', $email);

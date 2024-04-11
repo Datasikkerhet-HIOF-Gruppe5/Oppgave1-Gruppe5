@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['message_id'], $_POST[
     $messageId = $_POST['message_id'];
     $anonymousComment = $_POST['anonymous_comment'];
 
-    $pdo = db_connect::getInstance();
+    $pdo = Database::getInstance();
     // Insert the anonymous comment into the database
     $stmt = $pdo->prepare("UPDATE messages SET anonymous_comment = :comment WHERE id = :message_id");
     $stmt->bindParam(':comment', $anonymousComment);

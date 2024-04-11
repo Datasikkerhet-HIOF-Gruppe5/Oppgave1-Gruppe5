@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $token = $_GET['token'];
 
     // Validate the token
-    $pdo = db_connect::getInstance();
+    $pdo = Database::getInstance();
     $currentTime = time();
 
     $tokenQuery = "SELECT * FROM password_reset WHERE token = ? AND expiry_time > ?";

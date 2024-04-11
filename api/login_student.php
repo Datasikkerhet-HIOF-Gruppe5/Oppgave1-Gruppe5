@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-include_once 'db_connect.php';
+include_once 'Database.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Get post data
@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         // Prepare SQL statement to fetch student data based on email
-        $pdo = db_connect::getInstance();
+        $pdo = Database::getInstance();
         $stmt = $pdo->prepare("SELECT * FROM students WHERE email = :email");
         $stmt->bindParam(':email', $email);
         $stmt->execute();

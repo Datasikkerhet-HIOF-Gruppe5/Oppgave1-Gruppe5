@@ -3,7 +3,7 @@
 require_once  '../../api/init.php';
 
 include 'db_connect.php';
-$pdo = db_connect::getInstance();
+$pdo = Database::getInstance();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {

@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['message_id'], $_POST[
     $messageId = $_POST['message_id'];
     $reportText = $_POST['report_text'];
 
-    $pdo = db_connect::getInstance();
+    $pdo = Database::getInstance();
     // Insert the anonymous report into the database
     $stmt = $pdo->prepare("INSERT INTO message_reports (message_id, report_text) VALUES (:message_id, :report_text)");
     $stmt->bindParam(':message_id', $messageId);

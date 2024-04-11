@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'anonymous') {
     exit('Access Denied');
 }
 
-$pdo = db_connect::getInstance();
+$pdo = Database::getInstance();
 $stmt = $pdo->prepare("SELECT subjects.id, subjects.subjectName, professors.pictureFile
                        FROM subjects
                        INNER JOIN professors ON subjects.professor_id = professors.id");

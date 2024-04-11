@@ -1,5 +1,5 @@
 <?php
-class db_connect
+class Database
 {
     private static $pdo;
 
@@ -35,4 +35,3 @@ class db_connect
         }
     }
 }
-

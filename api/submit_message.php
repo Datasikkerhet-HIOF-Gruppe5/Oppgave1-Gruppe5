@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-include_once 'db_connect.php';
+include_once 'Database.php';
 
 // Check if the user is logged in
 if (!isset($_POST['student_id'])) {
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         // Insert message into the database
-        $pdo = db_connect::getInstance();
+        $pdo = Database::getInstance();
         $stmt = $pdo->prepare("INSERT INTO messages (message, subject_id, student_id) VALUES (:message, :subject_id, :student_id)");
         $stmt->bindParam(':message', $newMessage);
         $stmt->bindParam(':subject_id', $subjectId);

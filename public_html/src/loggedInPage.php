@@ -2,7 +2,7 @@
 session_start();
 
 include 'db_connect.php';
-$pdo = db_connect::getInstance();
+$pdo = Database::getInstance();
 if (!isset($_SESSION['user_id'], $_SESSION['user_role'])) {
     header("Location: login.php"); // Redirect to login if not logged in
     exit;

@@ -6,7 +6,7 @@ require_once  '../../api/init.php';
 
 function checkEmailExistence($email): bool
 {
-    $pdo = db_connect::getInstance();
+    $pdo = Database::getInstance();
 
     $query = "SELECT * FROM professors WHERE email = :email LIMIT 1";
     $stmt = $pdo->prepare($query);
@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     */
 // Insert professor data into the first database
-    $pdo = db_connect::getInstance();
+    $pdo = Database::getInstance();
     $stmt = $pdo->prepare("INSERT INTO professors (firstName, lastName, email, password, pictureFile) 
     VALUES (:firstName, :lastName, :email, :password, :pictureFile)");
 

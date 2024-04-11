@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 function updatePassword($email, $newPassword)
 {
-    $pdo = db_connect::getInstance();
+    $pdo = Database::getInstance();
 
     $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
