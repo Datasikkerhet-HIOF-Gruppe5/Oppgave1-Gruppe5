@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         // Send the reset email regardless of whether the email exists or not
-        $resetLink = "http://158.39.188.207/steg1/public_html/src/passwordReset.php?token=$token";
+        $resetLink = "http://158.39.188.207/steg2/public_html/src/passwordReset.php?token=$token";
         $subject = "Password Reset";
         $message = "Click the following link to reset your password: $resetLink";
 
