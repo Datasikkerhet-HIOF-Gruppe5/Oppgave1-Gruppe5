@@ -40,6 +40,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
+    // Password rules
+    $password = $_POST['password'];
+    if (strlen($password) < 10) {
+        throw new Exception("Password must be at least 10 characters long");
+    }
+    if (!preg_match('/[A-Z]/', $password)) {
+        throw new Exception("Password must contain at least one uppercase letter");
+    }
+    if (!preg_match('/[a-z]/', $password)) {
+        throw new Exception("Password must contain at least one lowercase letter");
+    }
+    if (!preg_match('/[0-9]/', $password)) {
+        throw new Exception("Password must contain at least one digit");
+    }
+    if (!preg_match('/[^A-Za-z0-9]/', $password)) {
+        throw new Exception("Password must contain at least one special character");
+    }
+
     // Password hashing
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
