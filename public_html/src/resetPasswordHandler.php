@@ -1,4 +1,6 @@
 <?php
+session_start(); // Start the session
+
 include 'db_connect.php';
 include_once  '../../api/logger.php';
 require_once  '../../api/init.php';
@@ -6,6 +8,7 @@ require_once  '../../api/init.php';
 $errors = array();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Check CSRF token
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         $errors[] = "CSRF token validation failed.";
     }
@@ -37,8 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Display success message and redirect to index.php after 5 seconds
         writeToLog("Password reset successful for user: " . $sanitizedEmail);
-        echo "Password updated successfully redirecting to login.";
-        echo "<meta http-equiv='refresh' content='5;url=http://158.39.188.207/steg1/public_html/index.php'>";
+        echo "Password updated successfully. Redirecting to login.";
+        echo "<meta http-equiv='refresh' content='5;url=https://158.39.188.207/steg2/public_html/'/>";
     } else {
         foreach ($errors as $error) {
             echo $error . "<br>";
