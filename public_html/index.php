@@ -26,6 +26,7 @@ require_once  '../api/init.php';
 
 <h2>Allerede bruker?</h2>
 <form action="src/login.php" method="post">
+    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
     <label for="email">Email:</label><br>
     <input type="email" name="email" id="email" placeholder="example@example.com" size="30" autocomplete="email" required><br>
     <label for="password">Passord:</label><br>

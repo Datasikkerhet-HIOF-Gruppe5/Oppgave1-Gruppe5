@@ -70,17 +70,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 // Handling file upload
     $fileSize = $_FILES['picture']['size'];
-    $pictureFile = NULL;
+    $temporaryFile = $_FILES['picture']['tmp_name'];  // Use the temporary file name
 
     if ($fileSize > 0 && $fileSize < 500000) {
         $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $mime = $finfo->file($pictureFile);
+        $mime = $finfo->file($temporaryFile);  // Use the temporary file for MIME type check
 
         if (in_array($mime, ['image/jpeg', 'image/png'])) {
             $pictureFile = uniqid('', true) . ".jpg";
-            $fileDestination = '../../uploads/' . '/' . $pictureFile;
+            $fileDestination = '../../uploads/' . $pictureFile;  // Corrected the file path
 
-            if (move_uploaded_file($pictureFile, $fileDestination)) {
+            if (move_uploaded_file($temporaryFile, $fileDestination)) {
                 // File upload successful
             } else {
                 echo 'There was an error uploading your picture.';
@@ -91,29 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         echo ' File size is either too large or missing.';
     }
-    /* FJERNES OM KODE OVER FUNGERER
-    if ($fileSize !== 0) {
-        $fileName = $_FILES['picture']['name'];
-        $fileTmpName = $_FILES['picture']['tmp_name'];
-        $fileError = $_FILES['picture']['error'];
-    
-        $fileExt = explode('.', $fileName);
-        $fileActualExt = strtolower(end($fileExt));
-    
-        $allowed = array('jpg', 'jpeg', 'png');
-    
-        if(in_array($fileActualExt, $allowed)) {
-            if($fileError === 0 && $fileSize < 500000) {
-                    $pictureFile = uniqid('', true) . ".jpg";
-    
-                    $fileDestination = '../../uploads/' . $pictureFile;
-                move_uploaded_file($fileTmpName, $fileDestination);
-            } 
-        } else {
-            echo 'There was an error uploading your picture';
-        }
-    }
-    */
+
 // Insert professor data into the first database
     $pdo = Database::getInstance();
     $stmt = $pdo->prepare("INSERT INTO professors (firstName, lastName, email, password, pictureFile) 
