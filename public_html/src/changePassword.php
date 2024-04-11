@@ -27,11 +27,28 @@ function updatePassword($data, $pdo)
         die("New passwords do not match.");
     }
 
+    $password = $data['new_password'];
+    if (strlen($password) < 10) {
+        die("Password must be at least 10 characters long");
+    }
+    if (!preg_match('/[A-Z]/', $password)) {
+        die("Password must contain at least one uppercase letter");
+    }
+    if (!preg_match('/[a-z]/', $password)) {
+        die("Password must contain at least one lowercase letter");
+    }
+    if (!preg_match('/[0-9]/', $password)) {
+        die("Password must contain at least one digit");
+    }
+    if (!preg_match('/[^A-Za-z0-9]/', $password)) {
+        die("Password must contain at least one special character");
+    }
+
     $query = "UPDATE professors SET password = :password WHERE id = :id";
 
     $stmt = $pdo->prepare($query);
 
-    $newHashedPassword = password_hash($data['new_password'], PASSWORD_DEFAULT);
+    $newHashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     $stmt->bindParam(':password', $newHashedPassword);
     $stmt->bindParam(':id', $professorId);
@@ -39,6 +56,7 @@ function updatePassword($data, $pdo)
 
     die("Password updated successfully. <a href='../index.php'>Go back to login</a>");
 }
+
 
 
 function getProfessorById($userId, $pdo)
