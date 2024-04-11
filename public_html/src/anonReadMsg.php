@@ -1,6 +1,6 @@
 <?php
 include 'db_connect.php';
-session_start();
+require_once  '../../api/init.php';
 
 // Check if the user is logged in as anonymous
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'anonymous') {
@@ -31,6 +31,7 @@ foreach ($subjects as $subject) {
         echo "<img src='../../uploads/" . $subject['pictureFile'] . "' alt='Lecturer Picture' style='max-width: 100px; max-height: 100px;'><br>";
     }
     echo "<form action='' method='POST'>
+              <input type='hidden' name='csrf_token' value='" . htmlspecialchars($_SESSION['csrf_token']) . "'>
               <input type='hidden' name='subject_id' value='" . $subject['id'] . "'>
               <input type='text' name='pin' placeholder='Enter PIN' required>
               <button type='submit'>View Messages</button>
@@ -42,6 +43,10 @@ echo '</ul>';
 
 // Handling PIN submission and displaying messages
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['subject_id'], $_POST['pin'])) {
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
+
     $subjectId = $_POST['subject_id'];
     $enteredPIN = $_POST['pin'];
 
@@ -76,6 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['subject_id'], $_POST[
             } else {
                 // Show form to submit a comment
                 echo "<form action='anonPostComment.php' method='POST'>";
+                echo "<input type='hidden' name='csrf_token' value='" . htmlspecialchars($_SESSION['csrf_token']) . "'>";
                 echo "<input type='hidden' name='message_id' value='" . $message['id'] . "'>";
                 echo "<input type='text' name='anonymous_comment' placeholder='Add a comment'>";
                 echo "<button type='submit'>Submit Comment</button>";
@@ -84,6 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['subject_id'], $_POST[
 
             // Form to report a message
             echo "<form action='submitReport.php' method='POST' style='margin-top: 10px;'>";
+            echo "<input type='hidden' name='csrf_token' value='" . htmlspecialchars($_SESSION['csrf_token']) . "'>";
             echo "<input type='hidden' name='message_id' value='" . $message['id'] . "'>";
             echo "<input type='text' name='report_text' placeholder='Enter your report'>";
             echo "<button type='submit'>Report Message</button>";

@@ -1,6 +1,6 @@
 <?php
 include 'db_connect.php';
-session_start();
+require_once  '../../api/init.php';
 
 if (!isset($_SESSION['user_id'])) {
     exit('Access Denied');
@@ -12,6 +12,9 @@ $messages = [];
 
 // Handle new message submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
     // Check if user is logged in before processing POST request
     if (!isset($_SESSION['user_id'])) {
         exit('Access Denied');
@@ -62,6 +65,7 @@ echo '<!DOCTYPE html>
 foreach ($subjects as $subject) {
     echo "<li>" . htmlspecialchars($subject['subjectName']) . " 
               <form action='' method='POST'>
+                  <input type='hidden' name='csrf_token' value='" . htmlspecialchars($_SESSION['csrf_token']) . "'>
                   <input type='hidden' name='subject_id' value='" . $subject['id'] . "'>
                   <button type='submit'>Messages</button>
               </form>
@@ -87,6 +91,7 @@ if ($subjectId) {
 
     // Form to submit a new message
     echo "<form action='' method='POST'>
+            <input type='hidden' name='csrf_token' value='" . htmlspecialchars($_SESSION['csrf_token']) . "'>
             <input type='hidden' name='subject_id' value='" . htmlspecialchars($subjectId) . "'>
             <textarea name='new_message' placeholder='Type your message here'></textarea>
             <button type='submit'>Send New Message</button>

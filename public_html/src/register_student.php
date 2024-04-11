@@ -14,18 +14,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Sanitize firstname
         $firstName = filter_var($_POST['firstName'], FILTER_SANITIZE_STRING);
         if (!preg_match("/^[a-zA-Z-' ]*$/", $firstName) || strlen($firstName) > 50) {
-            throw new Exception("Invalid first name");
+            die("Invalid first name");
         }
         // Sanitize lastname
         $lastName = filter_var($_POST['lastName'], FILTER_SANITIZE_STRING);
         if (!preg_match("/^[a-zA-Z-' ]*$/", $lastName) || strlen($lastName) > 50) {
-            throw new Exception("Invalid last name");
+            die("Invalid last name");
         }
 
         // Validate and sanitize email
         $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
         if (!$email || strlen($email) > 100) {
-            throw new Exception("Invalid email format");
+            die("Invalid email format");
         }
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
