@@ -1,6 +1,4 @@
 <?php
-session_start(); // Start the session
-
 include 'db_connect.php';
 include_once  '../../api/logger.php';
 require_once  '../../api/init.php';

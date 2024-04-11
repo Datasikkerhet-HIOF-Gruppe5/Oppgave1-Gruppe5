@@ -1,6 +1,6 @@
 <?php
 include 'db_connect.php';
-session_start(); // Start the session
+require_once  '../../api/init.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $token = $_GET['token'];
