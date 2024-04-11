@@ -1,5 +1,6 @@
 <?php
 require_once  '../api/init.php';
+header("Content-Security-Policy: upgrade-insecure-requests");
 ?>
 
 <!DOCTYPE html>

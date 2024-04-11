@@ -2,6 +2,8 @@
 include 'db_connect.php';
 session_start();
 
+header("Content-Security-Policy: upgrade-insecure-requests");
+
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login or show an error
     exit('Access Denied');

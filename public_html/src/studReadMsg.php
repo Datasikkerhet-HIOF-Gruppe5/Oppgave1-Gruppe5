@@ -2,6 +2,8 @@
 include 'db_connect.php';
 require_once  '../../api/init.php';
 
+header("Content-Security-Policy: upgrade-insecure-requests");
+
 if (!isset($_SESSION['user_id'])) {
     exit('Access Denied');
 }

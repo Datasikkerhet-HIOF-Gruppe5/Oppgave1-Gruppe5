@@ -1,4 +1,5 @@
 <?php
+header("Content-Security-Policy: upgrade-insecure-requests");
 class Database
 {
     private static $pdo;

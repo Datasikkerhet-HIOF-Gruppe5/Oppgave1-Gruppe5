@@ -4,6 +4,8 @@ include 'db_connect.php';
 include_once  '../../api/logger.php';
 require_once  '../../api/init.php';
 
+header("Content-Security-Policy: upgrade-insecure-requests");
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Check if CSRF token is set and valid
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {

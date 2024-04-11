@@ -2,6 +2,8 @@
 include 'db_connect.php';
 require_once  '../../api/init.php';
 
+header("Content-Security-Policy: upgrade-insecure-requests");
+
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $token = $_GET['token'];
 

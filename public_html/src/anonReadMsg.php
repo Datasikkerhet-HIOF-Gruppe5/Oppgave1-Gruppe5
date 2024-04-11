@@ -2,6 +2,8 @@
 include 'db_connect.php';
 require_once  '../../api/init.php';
 
+header("Content-Security-Policy: upgrade-insecure-requests");
+
 // Check if the user is logged in as anonymous
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'anonymous') {
     exit('Access Denied');

@@ -2,6 +2,8 @@
 include 'db_connect.php';
 session_start();
 
+header("Content-Security-Policy: upgrade-insecure-requests");
+
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'anonymous') {
     exit('Access Denied');
 }

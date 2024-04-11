@@ -3,6 +3,8 @@
 include 'db_connect.php';
 require_once  '../../api/init.php';
 
+header("Content-Security-Policy: upgrade-insecure-requests");
+
 // Function to get the number of failed attempts from session
 function getFailedAttempts() {
     return isset($_SESSION['failed_attempts']) ? $_SESSION['failed_attempts'] : 0;

@@ -3,6 +3,8 @@ include 'db_connect.php';
 include_once  '../../api/logger.php';
 require_once  '../../api/init.php';
 
+header("Content-Security-Policy: upgrade-insecure-requests");
+
 $errors = array();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

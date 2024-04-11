@@ -2,6 +2,8 @@
 include 'db_connect.php';
 require_once  '../../api/init.php';
 
+header("Content-Security-Policy: upgrade-insecure-requests");
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
